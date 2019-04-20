@@ -1,0 +1,6 @@
+# VSCode IDE settings
+.vscode/*
+
+# Build results and executables
+bin
+obj
