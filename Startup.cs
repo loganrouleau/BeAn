@@ -34,6 +34,16 @@ namespace BeAn
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6; // This seems to be the minimum allowed
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
+
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
@@ -70,6 +80,7 @@ namespace BeAn
 
             app.UseAuthentication();
             app.UseIdentityServer();
+
 
             app.UseMvc(routes =>
             {
