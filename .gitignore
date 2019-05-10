@@ -27,6 +27,9 @@ Obj/
 # Visual Studio Code
 .vscode/
 
+# SQLite Database
+*.db
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
