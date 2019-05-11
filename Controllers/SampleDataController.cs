@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BeAn.Data;
 
 namespace BeAn.Controllers
 {
@@ -16,11 +17,24 @@ namespace BeAn.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        private readonly ApplicationDbContext _context;
+
+        public SampleDataController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public IEnumerable<InnerWeatherForecast> WeatherForecasts()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            
+            Models.WeatherForecast forecast = new Models.WeatherForecast();
+            forecast.StringField = "Hello" + rng.Next(50);
+            _context.WeatherForecast.Add(forecast);
+            _context.SaveChanges();
+
+            return Enumerable.Range(1, 5).Select(index => new InnerWeatherForecast
             {
                 DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
                 TemperatureC = rng.Next(-20, 55),
@@ -28,7 +42,7 @@ namespace BeAn.Controllers
             });
         }
 
-        public class WeatherForecast
+        public class InnerWeatherForecast
         {
             public string DateFormatted { get; set; }
             public int TemperatureC { get; set; }
