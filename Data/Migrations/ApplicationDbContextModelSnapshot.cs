@@ -65,16 +65,24 @@ namespace BeAn.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("BeAn.Models.WeatherForecast", b =>
+            modelBuilder.Entity("BeAn.Models.Forms", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("StringField");
+                    b.Property<string>("DataPointsJson");
+
+                    b.Property<DateTime>("LastUpdated");
+
+                    b.Property<string>("ProgramDescription");
+
+                    b.Property<string>("ProgramId");
+
+                    b.Property<string>("StudentId");
 
                     b.HasKey("Id");
 
-                    b.ToTable("WeatherForecast");
+                    b.ToTable("Forms");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>

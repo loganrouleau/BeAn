@@ -17,6 +17,7 @@ namespace BeAn.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
-        public DbSet<BeAn.Models.WeatherForecast> WeatherForecast { get; set; }
+
+        public DbSet<BeAn.Models.Forms> Forms { get; set; }
     }
 }

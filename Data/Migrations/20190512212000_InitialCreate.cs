@@ -64,6 +64,23 @@ namespace BeAn.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Forms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StudentId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<DateTime>(nullable: false),
+                    ProgramId = table.Column<string>(nullable: true),
+                    ProgramDescription = table.Column<string>(nullable: true),
+                    DataPointsJson = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Forms", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PersistedGrants",
                 columns: table => new
                 {
@@ -78,19 +95,6 @@ namespace BeAn.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WeatherForecast",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    StringField = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WeatherForecast", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -269,10 +273,10 @@ namespace BeAn.Data.Migrations
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
-                name: "PersistedGrants");
+                name: "Forms");
 
             migrationBuilder.DropTable(
-                name: "WeatherForecast");
+                name: "PersistedGrants");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

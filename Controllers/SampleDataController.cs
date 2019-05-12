@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BeAn.Data;
+using Newtonsoft.Json;
 
 namespace BeAn.Controllers
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
@@ -29,9 +30,20 @@ namespace BeAn.Controllers
         {
             var rng = new Random();
             
-            Models.WeatherForecast forecast = new Models.WeatherForecast();
-            forecast.StringField = "Hello" + rng.Next(50);
-            _context.WeatherForecast.Add(forecast);
+            Models.Forms form = new Models.Forms();
+            form.StudentId = "student1";
+            form.LastUpdated = DateTime.Now;
+            form.ProgramId = "program1";
+            form.ProgramDescription = "description";
+
+            IList<string> DataPoints = new List<string>();
+            DataPoints.Add("Datapoint1");
+            DataPoints.Add("Datapoint2");
+            DataPoints.Add("Datapoint3");
+
+            form.DataPointsJson = JsonConvert.SerializeObject(DataPoints);
+
+            _context.Forms.Add(form);
             _context.SaveChanges();
 
             return Enumerable.Range(1, 5).Select(index => new InnerWeatherForecast
