@@ -54,6 +54,14 @@ namespace BeAn.Controllers
             });
         }
 
+        [HttpPost("test")]
+        public IActionResult AddSession([FromBody] Models.Forms session)
+        {
+            // Write the programId specified in the javascript state in EnterData.js to the console
+            Console.WriteLine("Writing line!!!!!!!!! " + session.ProgramId);
+            return Ok();
+        }
+
         public class InnerWeatherForecast
         {
             public string DateFormatted { get; set; }
