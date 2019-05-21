@@ -14,6 +14,7 @@ export class EnterData extends Component {
     super(props);
     this.state = {
       studentId: 'student123',
+      studentInitial: 'AA',
       lastUpdated: '2019-05-19',
       programId: 'program321',
       programDescription: 'programDescription',
@@ -24,11 +25,22 @@ export class EnterData extends Component {
   }
 
   handleChange(event) {
-    this.setState({ value: event.target.value });
+    //this.setState({ studentId: event.target.value });
+    //this.setState({ studentInitial: event.target.value });
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
+    alert('The Student ID submitted is: ' + this.state.studentId+'\n'+
+    'The Student Initial submitted is: ' +this.state.studentInitial);
+    
     event.preventDefault();
 
     var url = 'https://localhost:5001/api/SampleData/test';
@@ -49,10 +61,15 @@ export class EnterData extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          Name:
-            <input type="text" value={this.state.value} onChange={this.handleChange} />
+          Student ID:
+            <input name="studentId" type="text" value={this.state.studentId} onChange={this.handleChange} />
         </label>
-
+        <div>
+        </div>
+        <label>
+          Student Initial:
+            <input name="studentInitial" type="text" value={this.state.studendInitial} onChange={this.handleChange} />
+        </label>
         {/*<Select /> {/* Gender Selection */}
 
         <Input /> {/* Name of the user */}
