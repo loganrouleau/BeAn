@@ -1,4 +1,5 @@
 import React from 'react';
+// import Select from 'react-select';
 
 
 const Select = (props) => {
@@ -10,7 +11,7 @@ const Select = (props) => {
 		      value={props.value}
 		      onChange={props.handleChange}
 		      className="form-control">
-		      <option value="" disabled>{props.placeholder}</option>
+		      {/* <option value="" disabled>{props.placeholder}</option>
 		      {props.options.map(option => {
 		        return (
 		          <option
@@ -18,7 +19,7 @@ const Select = (props) => {
 		            value={option}
 		            label={option}>{option}</option>
 		        );
-		      })}
+		      })} */}
 		    </select>
   </div>)
 }

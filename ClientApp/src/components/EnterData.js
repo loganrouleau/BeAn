@@ -3,8 +3,8 @@ import CheckBox from '../components/CheckBox';
 import Input from '../components/Input';
 import TextArea from '../components/TextArea';
 import Select from '../components/Select';
-import Button from '../components/Button'
-import authService from './api-authorization/AuthorizeService'
+import Button from '../components/Button';
+import authService from './api-authorization/AuthorizeService';
 
 
 export class EnterData extends Component {
@@ -13,12 +13,13 @@ export class EnterData extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      studentId: 'student123',
+      studentId: 'SID0096',
       studentInitial: 'AA',
       lastUpdated: '2019-05-19',
-      programId: 'program321',
+      programId: 'PID0023',
       programDescription: 'programDescription',
-      dataPointsJson: 'datapoint'
+      dataPointsJson: 'datapoint',
+      remark:'',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -59,33 +60,36 @@ export class EnterData extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form name="studentInfo" onSubmit={this.handleSubmit}>
         <label>
           Student ID:
             <input name="studentId" type="text" value={this.state.studentId} onChange={this.handleChange} />
         </label>
-        <div>
-        </div>
+        <div/>
         <label>
           Student Initial:
             <input name="studentInitial" type="text" value={this.state.studendInitial} onChange={this.handleChange} />
         </label>
-        {/*<Select /> {/* Gender Selection */}
-
-        <Input /> {/* Name of the user */}
-        <Input /> {/* Input for Age */}
-            <Input /> {/* Input for Age */} 
-        <Input /> {/* Input for Age */}
-            <Input /> {/* Input for Age */} 
-        <Input /> {/* Input for Age */}
-            <Input /> {/* Input for Age */} 
-        <Input /> {/* Input for Age */}
+        <div/>
+        <label>
+          Program ID:
+          <select value={this.state.programId} onChange={this.handleChange}>
+              {/* BC: to be refactor to use db values*/}
+              <option value="PID0023">PID0023</option>
+              <option value="lime">Lime</option>
+              <option value="coconut">Coconut</option>
+              <option value="mango">Mango</option>
+          </select>
+        </label>
+        <div/>
+        <label>
+          Remark: 
+          <TextArea name="remark" value="" /> 
+        </label>
         {/*<CheckBox /> {/* List of Skills (eg. Programmer, developer) */}
-        <TextArea value="about you" /> {/* About you */}
-        <Button value="about you" /> { /*Submit */}
-        <Button /> {/*Clear the form */}
-
-
+        {/* <Button value="about you" /> { /*Submit */}
+        {/* <Button /> Clear the form */}
+        <div/>
         <input type="submit" value="Submit" />
       </form>
     );
