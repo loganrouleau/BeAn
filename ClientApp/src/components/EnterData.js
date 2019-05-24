@@ -5,14 +5,15 @@ import TextArea from '../components/TextArea';
 import Select from '../components/Select';
 import Button from '../components/Button';
 import authService from './api-authorization/AuthorizeService';
+import { Redirect } from 'react-router-dom'
 
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class EnterData extends Component {
   static displayName = EnterData.name;
-
   constructor(props) {
     super(props);
     this.state = {
+      toStudentInfo: false,
       newStudent:{
         studentId: 'SID0096',
         studentInitial: '',
@@ -72,6 +73,7 @@ export class EnterData extends Component {
   }
   
   handleSubmit(event) {
+    //this.setState({toStudentInfo: true})
     alert('The Student ID submitted is: ' + this.state.newStudent.studentId+'\n'+
     'The Student Initial submitted is: ' +this.state.newStudent.studentInitial);
     event.preventDefault();
@@ -84,18 +86,20 @@ export class EnterData extends Component {
       headers: {
         'content-type': 'application/json'
       }
-    }).then(response => {
-      response.json().then(data => {
-        console.log("Successful" + data);
-      });
-    }).catch(err => {
-        console.error(err);
-      });
+    })
+    .then(response => response.json())
+    .then(data => console.log("Successful" + data))
+    .catch(err => console.error(err))
+    .then (()=> this.setState( ()=>({toStudentInfo: true})))
+    ;
   }
 
   render() {
+    if(this.state.toStudentInfo===true){
+      return <Redirect to = '/student-info' />;
+    }
     return (
-      <form name="studentInfo" onSubmit={this.handleSubmit}>
+      <form name="enterStudentInfo" onSubmit={this.handleSubmit}>
         {/* Student ID */}
         <Input
           inputType={"text"}
@@ -137,62 +141,3 @@ export class EnterData extends Component {
     );
   }
 }
-//   static renderForecastsTable(forecasts) {
-//     return (
-//       <table className='table table-striped'>
-//         <thead>
-//           <tr>
-//             <th>Date</th>
-//             <th>Temp. (C)</th>
-//             <th>Temp. (F)</th>
-//             <th>Summary</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {forecasts.map(forecast =>
-//             <tr key={forecast.dateFormatted}>
-//               <td>{forecast.dateFormatted}</td>
-//               <td>{forecast.temperatureC}</td>
-//               <td>{forecast.temperatureF}</td>
-//               <td>{forecast.summary}</td>
-//             </tr>
-//           )}
-//         </tbody>
-//       </table>
-//     );
-//   }
-
-//   render() {
-//     return (
-//         <div>
-//           <h1>Enter Data</h1>
-  
-//           <p>This is a simple example of a React component.</p>
-  
-//           <p>Current count: <strong>{this.state.currentCount}</strong></p>
-  
-//           <button className="btn btn-primary" onClick={this.incrementCounter}>Increment</button>
-//         </div>
-//       );
-    // let contents = this.state.loading
-    //   ? <p><em>Loading...</em></p>
-    //   : FetchData.renderForecastsTable(this.state.forecasts);
-
-    // return (
-    //   <div>
-    //     <h1>Weather forecast</h1>
-    //     <p>This component demonstrates fetching data from the server.</p>
-    //     {contents}
-    //   </div>
-    // );
-//   }
-
-//   async populateWeatherData() {
-//     const token = await authService.getAccessToken();
-//     const response = await fetch('api/SampleData/WeatherForecasts', {
-//       headers: !token ? {} : { 'Authorization': `Bearer ${token}` }
-//     });
-//     const data = await response.json();
-//     this.setState({ forecasts: data, loading: false });
-//   }
-
