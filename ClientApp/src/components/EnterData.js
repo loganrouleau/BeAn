@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import CheckBox from '../components/CheckBox';
-import Input from '../components/Input';
-import TextArea from '../components/TextArea';
-import Select from '../components/Select';
-import Button from '../components/Button';
-import authService from './api-authorization/AuthorizeService';
-import { Redirect } from 'react-router-dom'
+import React, { Component } from "react";
+import CheckBox from "../components/CheckBox";
+import Input from "./Input";
+import TextArea from "./TextArea";
+import Select from "./Select";
+import Button from "../components/Button";
+import authService from "./api-authorization/AuthorizeService";
+import { Redirect } from "react-router-dom";
 
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class EnterData extends Component {
@@ -14,19 +14,16 @@ export class EnterData extends Component {
     super(props);
     this.state = {
       toStudentInfo: false,
-      newStudent:{
-        studentId: 'SID0096',
-        studentInitial: '',
-        lastUpdated: '2019-05-19',
-        programId: "",
-        programDescription: 'programDescription',
-        dataPointsJson: 'datapoint',
-        remark:''
+      newStudent: {
+        studentId: "SID0096",
+        studentInitial: "",
+        remark: "",
+        programId: ""
       },
-      programIdOptions: ["A","B","C","PID0023"]
+      programIdOptions: ["A", "B", "C", "PID0023"]
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+
     this.handleInput = this.handleInput.bind(this);
     this.handleTextArea = this.handleTextArea.bind(this);
   }
@@ -35,13 +32,12 @@ export class EnterData extends Component {
     //this.setState({ studentId: event.target.value });
     //this.setState({ studentInitial: event.target.value });
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
 
     this.setState({
       [name]: value
     });
-
   }
 
   handleInput(e) {
@@ -71,32 +67,35 @@ export class EnterData extends Component {
       () => console.log(this.state.newStudent)
     );
   }
-  
-  handleSubmit(event) {
+
+  handleSubmit = event => {
     //this.setState({toStudentInfo: true})
-    alert('The Student ID submitted is: ' + this.state.newStudent.studentId+'\n'+
-    'The Student Initial submitted is: ' +this.state.newStudent.studentInitial);
+    alert(
+      "The Student ID submitted is: " +
+        this.state.newStudent.studentId +
+        "\n" +
+        "The Student Initial submitted is: " +
+        this.state.newStudent.studentInitial
+    );
     event.preventDefault();
-    let userData = this.state.newStudent;
-    var url = 'https://localhost:5001/api/SampleData/test';
+    let url = "https://localhost:5001/api/Student/create";
     fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(userData),
-      cache: 'no-cache',
+      method: "POST",
+      body: JSON.stringify(this.state.newStudent),
+      cache: "no-cache",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json"
       }
     })
-    .then(response => response.json())
-    .then(data => console.log("Successful" + data))
-    .catch(err => console.error(err))
-    .then (()=> this.setState( ()=>({toStudentInfo: true})))
-    ;
-  }
+      .then(response => response.json())
+      .then(data => console.log("Successful" + data))
+      .catch(err => console.error(err))
+      .then(() => this.setState(() => ({ toStudentInfo: true })));
+  };
 
   render() {
-    if(this.state.toStudentInfo===true){
-      return <Redirect to = '/student-info' />;
+    if (this.state.toStudentInfo === true) {
+      return <Redirect to="/student-info" />;
     }
     return (
       <form name="enterStudentInfo" onSubmit={this.handleSubmit}>
@@ -119,23 +118,25 @@ export class EnterData extends Component {
           handleChange={this.handleInput}
         />{" "}
         {/* Remark */}
-        <TextArea 
+        <TextArea
           title={"Remark"}
           row={3}
           value={this.state.newStudent.remark}
           name={"remark"}
           handleChange={this.handleTextArea}
           placeholder={"Any additional information"}
-        />{""}
+        />
+        {""}
         {/* Program ID (to be removed for another page) */}
         <Select
           title={"Program ID"}
           name={"programId"}
-          value={this.state.newStudent.programId} 
+          value={this.state.newStudent.programId}
           options={this.state.programIdOptions}
           handleChange={this.handleInput}
           placeholder={"Select Program"}
-        />{""}
+        />
+        {""}
         <input type="submit" value="Submit" />
       </form>
     );

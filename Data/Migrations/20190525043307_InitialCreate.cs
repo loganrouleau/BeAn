@@ -98,6 +98,23 @@ namespace BeAn.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StudentId = table.Column<string>(nullable: true),
+                    StudentInitial = table.Column<string>(nullable: true),
+                    Remark = table.Column<string>(nullable: true),
+                    ProgramId = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -277,6 +294,9 @@ namespace BeAn.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "PersistedGrants");
+
+            migrationBuilder.DropTable(
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

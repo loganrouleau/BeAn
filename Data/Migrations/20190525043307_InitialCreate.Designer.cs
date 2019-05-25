@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeAn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190512212000_InitialCreate")]
+    [Migration("20190525043307_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,28 @@ namespace BeAn.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Forms");
+                });
+
+            modelBuilder.Entity("BeAn.Models.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("datetime('now')");
+
+                    b.Property<string>("ProgramId");
+
+                    b.Property<string>("Remark");
+
+                    b.Property<string>("StudentId");
+
+                    b.Property<string>("StudentInitial");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>

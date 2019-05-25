@@ -19,5 +19,14 @@ namespace BeAn.Data
         }
 
         public DbSet<BeAn.Models.Forms> Forms { get; set; }
+        public DbSet<BeAn.Models.Student> Students { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Student>()
+                .Property(s => s.LastUpdated)
+                .HasDefaultValueSql("datetime('now')");
+        }
     }
 }

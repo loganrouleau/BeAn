@@ -11,7 +11,7 @@ namespace BeAn.Controllers
 {
 
     [Route("api/[controller]")]
-    public class SampleDataController : Controller
+    public class StudentController : Controller
     {
         private static string[] Summaries = new[]
         {
@@ -20,7 +20,7 @@ namespace BeAn.Controllers
 
         private readonly ApplicationDbContext _context;
 
-        public SampleDataController(ApplicationDbContext context)
+        public StudentController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace BeAn.Controllers
         public IEnumerable<InnerWeatherForecast> WeatherForecasts()
         {
             var rng = new Random();
-            
+
             Models.Forms form = new Models.Forms();
             form.StudentId = "student1";
             form.LastUpdated = DateTime.Now;
@@ -54,11 +54,11 @@ namespace BeAn.Controllers
             });
         }
 
-        [HttpPost("test")]
-        public IActionResult AddSession([FromBody] Models.Forms session)
+        [HttpPost("create")]
+        public IActionResult CreateStudent([FromBody] Models.Student student)
         {
-            // Write the programId specified in the javascript state in EnterData.js to the console
-            Console.WriteLine("Writing line!!!!!!!!! " + session.ProgramId);
+            _context.Students.Add(student);
+            _context.SaveChanges();
             return Ok();
         }
 
