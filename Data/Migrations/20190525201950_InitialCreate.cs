@@ -64,23 +64,6 @@ namespace BeAn.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Forms",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    StudentId = table.Column<string>(nullable: true),
-                    LastUpdated = table.Column<DateTime>(nullable: false),
-                    ProgramId = table.Column<string>(nullable: true),
-                    ProgramDescription = table.Column<string>(nullable: true),
-                    DataPointsJson = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Forms", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PersistedGrants",
                 columns: table => new
                 {
@@ -106,7 +89,6 @@ namespace BeAn.Data.Migrations
                     StudentId = table.Column<string>(nullable: true),
                     StudentInitial = table.Column<string>(nullable: true),
                     Remark = table.Column<string>(nullable: true),
-                    ProgramId = table.Column<string>(nullable: true),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')")
                 },
                 constraints: table =>
@@ -220,6 +202,58 @@ namespace BeAn.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Programs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
+                    StudentId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Programs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Programs_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Students",
+                columns: new[] { "Id", "Remark", "StudentId", "StudentInitial" },
+                values: new object[] { -1, "Hi", "id1", "A.A" });
+
+            migrationBuilder.InsertData(
+                table: "Students",
+                columns: new[] { "Id", "Remark", "StudentId", "StudentInitial" },
+                values: new object[] { -2, "Hello", "id2", "B.B" });
+
+            migrationBuilder.InsertData(
+                table: "Students",
+                columns: new[] { "Id", "Remark", "StudentId", "StudentInitial" },
+                values: new object[] { -3, "Bye", "id3", "C.C" });
+
+            migrationBuilder.InsertData(
+                table: "Programs",
+                columns: new[] { "Id", "Description", "Name", "StudentId" },
+                values: new object[] { -1, "words", "Program B", -1 });
+
+            migrationBuilder.InsertData(
+                table: "Programs",
+                columns: new[] { "Id", "Description", "Name", "StudentId" },
+                values: new object[] { -3, "descwords", "Program A", -1 });
+
+            migrationBuilder.InsertData(
+                table: "Programs",
+                columns: new[] { "Id", "Description", "Name", "StudentId" },
+                values: new object[] { -2, "morewords", "Program C", -2 });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -267,6 +301,11 @@ namespace BeAn.Data.Migrations
                 name: "IX_PersistedGrants_SubjectId_ClientId_Type",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "ClientId", "Type" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Programs_StudentId",
+                table: "Programs",
+                column: "StudentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -290,19 +329,19 @@ namespace BeAn.Data.Migrations
                 name: "DeviceCodes");
 
             migrationBuilder.DropTable(
-                name: "Forms");
-
-            migrationBuilder.DropTable(
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Programs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Students");
         }
     }
 }

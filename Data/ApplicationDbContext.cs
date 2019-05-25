@@ -18,15 +18,33 @@ namespace BeAn.Data
         {
         }
 
-        public DbSet<BeAn.Models.Forms> Forms { get; set; }
+        public DbSet<BeAn.Models.Program> Programs { get; set; }
         public DbSet<BeAn.Models.Student> Students { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<BeAn.Models.Program>()
+                .Property(p => p.LastUpdated)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("datetime('now')");
             modelBuilder.Entity<Student>()
                 .Property(s => s.LastUpdated)
+                .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("datetime('now')");
+
+            modelBuilder.Entity<BeAn.Models.Program>().HasData(
+                new { Id = -1, Name = "Program B", Description = "words", StudentId = -1 },
+                new { Id = -2, Name = "Program C", Description = "morewords", StudentId = -2 },
+                new { Id = -3, Name = "Program A", Description = "descwords", StudentId = -1 }
+            );
+
+            modelBuilder.Entity<Student>().HasData(
+                new Student() { Id = -1, StudentId = "id1", StudentInitial = "A.A", Remark = "Hi" },
+                new Student() { Id = -2, StudentId = "id2", StudentInitial = "B.B", Remark = "Hello" },
+                new Student() { Id = -3, StudentId = "id3", StudentInitial = "C.C", Remark = "Bye" }
+            );
         }
     }
 }

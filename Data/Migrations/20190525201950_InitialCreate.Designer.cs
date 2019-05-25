@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeAn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190525043307_InitialCreate")]
+    [Migration("20190525201950_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,24 +67,49 @@ namespace BeAn.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("BeAn.Models.Forms", b =>
+            modelBuilder.Entity("BeAn.Models.Program", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("DataPointsJson");
+                    b.Property<string>("Description");
 
-                    b.Property<DateTime>("LastUpdated");
+                    b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("datetime('now')");
 
-                    b.Property<string>("ProgramDescription");
+                    b.Property<string>("Name");
 
-                    b.Property<string>("ProgramId");
-
-                    b.Property<string>("StudentId");
+                    b.Property<int?>("StudentId");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Forms");
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Programs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Description = "words",
+                            Name = "Program B",
+                            StudentId = -1
+                        },
+                        new
+                        {
+                            Id = -2,
+                            Description = "morewords",
+                            Name = "Program C",
+                            StudentId = -2
+                        },
+                        new
+                        {
+                            Id = -3,
+                            Description = "descwords",
+                            Name = "Program A",
+                            StudentId = -1
+                        });
                 });
 
             modelBuilder.Entity("BeAn.Models.Student", b =>
@@ -96,8 +121,6 @@ namespace BeAn.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("datetime('now')");
 
-                    b.Property<string>("ProgramId");
-
                     b.Property<string>("Remark");
 
                     b.Property<string>("StudentId");
@@ -107,6 +130,32 @@ namespace BeAn.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Students");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Remark = "Hi",
+                            StudentId = "id1",
+                            StudentInitial = "A.A"
+                        },
+                        new
+                        {
+                            Id = -2,
+                            LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Remark = "Hello",
+                            StudentId = "id2",
+                            StudentInitial = "B.B"
+                        },
+                        new
+                        {
+                            Id = -3,
+                            LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Remark = "Bye",
+                            StudentId = "id3",
+                            StudentInitial = "C.C"
+                        });
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -281,6 +330,13 @@ namespace BeAn.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("BeAn.Models.Program", b =>
+                {
+                    b.HasOne("BeAn.Models.Student", null)
+                        .WithMany("Programs")
+                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
