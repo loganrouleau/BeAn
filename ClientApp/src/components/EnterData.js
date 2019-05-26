@@ -1,48 +1,25 @@
 import React, { Component } from "react";
-import CheckBox from "../components/CheckBox";
+import { Redirect } from "react-router-dom";
 import Input from "./Input";
 import TextArea from "./TextArea";
 import Select from "./Select";
-import Button from "../components/Button";
-import authService from "./api-authorization/AuthorizeService";
-import { Redirect } from "react-router-dom";
 
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class EnterData extends Component {
-  static displayName = EnterData.name;
-  constructor(props) {
-    super(props);
-    this.state = {
-      toStudentInfo: false,
-      newStudent: {
-        studentId: "SID0096",
-        studentInitial: "",
-        remark: "",
-        programId: ""
-      },
-      programIdOptions: ["A", "B", "C", "PID0023"]
-    };
-    this.handleChange = this.handleChange.bind(this);
+  state = {
+    toStudentInfo: false,
+    newStudent: {
+      studentId: "",
+      studentInitial: "",
+      remark: "",
+      programId: ""
+    },
+    programIdOptions: []
+  };
 
-    this.handleInput = this.handleInput.bind(this);
-    this.handleTextArea = this.handleTextArea.bind(this);
-  }
-
-  handleChange(event) {
-    //this.setState({ studentId: event.target.value });
-    //this.setState({ studentInitial: event.target.value });
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  handleInput(e) {
-    let value = e.target.value;
-    let name = e.target.name;
+  handleInput = event => {
+    let value = event.target.value;
+    let name = event.target.name;
     this.setState(
       prevState => ({
         newStudent: {
@@ -52,31 +29,25 @@ export class EnterData extends Component {
       }),
       () => console.log(this.state.newStudent)
     );
+  };
+
+  componentDidMount() {
+    this.populateProgramData();
   }
 
-  handleTextArea(e) {
-    console.log("Inside handleTextArea");
-    let value = e.target.value;
-    this.setState(
-      prevState => ({
-        newStudent: {
-          ...prevState.newStudent,
-          remark: value
-        }
-      }),
-      () => console.log(this.state.newStudent)
-    );
+  async populateProgramData() {
+    //const token = await authService.getAccessToken();
+    const response = await fetch("api/Program", {
+      headers: {}
+    });
+    const data = await response.json();
+    console.log(data);
+    this.setState({
+      programIdOptions: Object.keys(data).map(i => data[i].name)
+    });
   }
 
   handleSubmit = event => {
-    //this.setState({toStudentInfo: true})
-    alert(
-      "The Student ID submitted is: " +
-        this.state.newStudent.studentId +
-        "\n" +
-        "The Student Initial submitted is: " +
-        this.state.newStudent.studentInitial
-    );
     event.preventDefault();
     let url = "https://localhost:5001/api/Student/create";
     fetch(url, {
@@ -105,9 +76,9 @@ export class EnterData extends Component {
           title={"Student ID"}
           name={"studentId"}
           value={this.state.newStudent.studentId}
-          placeholder={"SID0001"}
+          placeholder={"Enter Student ID"}
           handleChange={this.handleInput}
-        />{" "}
+        />
         {/* Student Initial */}
         <Input
           inputType={"text"}
@@ -116,17 +87,16 @@ export class EnterData extends Component {
           value={this.state.newStudent.studentInitial}
           placeholder={"Enter Student Initials"}
           handleChange={this.handleInput}
-        />{" "}
+        />
         {/* Remark */}
         <TextArea
           title={"Remark"}
           row={3}
           value={this.state.newStudent.remark}
           name={"remark"}
-          handleChange={this.handleTextArea}
+          handleChange={this.handleInput}
           placeholder={"Any additional information"}
         />
-        {""}
         {/* Program ID (to be removed for another page) */}
         <Select
           title={"Program ID"}
@@ -136,7 +106,6 @@ export class EnterData extends Component {
           handleChange={this.handleInput}
           placeholder={"Select Program"}
         />
-        {""}
         <input type="submit" value="Submit" />
       </form>
     );

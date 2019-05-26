@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BeAn
 {
-    public class Program
+    public class MainProgram
     {
         public static void Main(string[] args)
         {
