@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeAn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190525201950_InitialCreate")]
+    [Migration("20190602223814_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -334,7 +334,7 @@ namespace BeAn.Data.Migrations
 
             modelBuilder.Entity("BeAn.Models.Program", b =>
                 {
-                    b.HasOne("BeAn.Models.Student", null)
+                    b.HasOne("BeAn.Models.Student", "Student")
                         .WithMany("Programs")
                         .HasForeignKey("StudentId");
                 });

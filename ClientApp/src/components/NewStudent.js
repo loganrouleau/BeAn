@@ -5,9 +5,10 @@ import TextArea from "./TextArea";
 import Select from "./Select";
 
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
-export class EnterData extends Component {
+export class NewStudent extends Component {
   state = {
     toStudentInfo: false,
+    id: "",
     newStudent: {
       studentId: "",
       studentInitial: "",
@@ -50,6 +51,7 @@ export class EnterData extends Component {
   handleSubmit = event => {
     event.preventDefault();
     let url = "https://localhost:5001/api/Student/create";
+    let responsedata;
     fetch(url, {
       method: "POST",
       body: JSON.stringify(this.state.newStudent),
@@ -59,14 +61,19 @@ export class EnterData extends Component {
       }
     })
       .then(response => response.json())
-      .then(data => console.log("Successful" + data))
+      .then(data => {
+        console.log("Successful" + data);
+        responsedata = data.id;
+      })
       .catch(err => console.error(err))
-      .then(() => this.setState(() => ({ toStudentInfo: true })));
+      .then(() =>
+        this.setState(() => ({ toStudentInfo: true, id: responsedata }))
+      );
   };
 
   render() {
-    if (this.state.toStudentInfo === true) {
-      return <Redirect to="/student-info" />;
+    if (this.state.toStudentInfo) {
+      return <Redirect to={"/students/" + this.state.id} />;
     }
     return (
       <form name="enterStudentInfo" onSubmit={this.handleSubmit}>

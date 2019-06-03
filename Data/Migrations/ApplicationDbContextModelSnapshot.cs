@@ -332,7 +332,7 @@ namespace BeAn.Data.Migrations
 
             modelBuilder.Entity("BeAn.Models.Program", b =>
                 {
-                    b.HasOne("BeAn.Models.Student", null)
+                    b.HasOne("BeAn.Models.Student", "Student")
                         .WithMany("Programs")
                         .HasForeignKey("StudentId");
                 });

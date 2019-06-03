@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BeAn.Data;
+using BeAn.Models;
 using Newtonsoft.Json;
 
 namespace BeAn.Controllers
@@ -25,7 +26,20 @@ namespace BeAn.Controllers
         {
             _context.Students.Add(student);
             _context.SaveChanges();
-            return Ok();
+            return Json(new { id = student.Id });
         }
+
+        [HttpGet("programs/{id}")]
+        public IEnumerable<Program> GetPrograms(int id)
+        {
+            return _context.Programs.Where(p => p.Student.Id == id).ToList();
+        }
+
+        [HttpGet("{id}")]
+        public Student GetStudent(int id)
+        {
+            return _context.Students.Where(s => s.Id.Equals(id)).First();
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BeAn.Models
 {
@@ -15,6 +15,8 @@ namespace BeAn.Models
 
         public DateTime LastUpdated { get; set; }
 
+        [ForeignKey("StudentId")]
+        public virtual Student Student { get; set; }
     }
 
 }
