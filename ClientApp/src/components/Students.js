@@ -1,16 +1,13 @@
 import React, { Component } from "react";
+import { Container, Row, Col } from "reactstrap";
 
-// ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class Students extends Component {
   state = {
-    toStudentInfo: false,
-    newStudent: {
-      studentId: "",
-      studentInitial: "",
-      remark: "",
-      programId: "",
-      lastUpdated: ""
-    },
+    studentId: "",
+    studentInitial: "",
+    remark: "",
+    programId: "",
+    lastUpdated: "",
     programIdOptions: []
   };
 
@@ -20,21 +17,18 @@ export class Students extends Component {
   }
 
   async loadStudent() {
-    let id = this.props.match.params.id;
     console.log(this.props);
-    const response = await fetch("api/Student/" + id, {
+    const response = await fetch("api/student/" + this.props.match.params.id, {
       headers: {}
     });
     const data = await response.json();
     console.log(data);
     this.setState({
-      newStudent: {
-        studentId: data.studentId,
-        studentInitial: data.studentInitial,
-        remark: data.remark,
-        programId: data.programId,
-        lastUpdated: data.lastUpdated
-      }
+      studentId: data.studentId,
+      studentInitial: data.studentInitial,
+      remark: data.remark,
+      programId: data.programId,
+      lastUpdated: data.lastUpdated
     });
     console.log(this.state);
   }
@@ -43,7 +37,7 @@ export class Students extends Component {
     //const token = await authService.getAccessToken();
     console.log("About to fetch ");
     const response = await fetch(
-      "api/Student/programs/" + this.props.match.params.id,
+      "api/student/programs/" + this.props.match.params.id,
       {
         headers: {}
       }
@@ -57,13 +51,24 @@ export class Students extends Component {
 
   render() {
     return (
-      <div>
-        <title>Student</title>
-        <p>
-          Hello
-          {this.state.programIdOptions}
-        </p>
-      </div>
+      <Container>
+        <Row>
+          <Col>Student ID</Col>
+          <Col>{this.state.studentId}</Col>
+        </Row>
+        <Row>
+          <Col>Remark</Col>
+          <Col>{this.state.remark}</Col>
+        </Row>
+        <Row>
+          <Col>Last Updated</Col>
+          <Col>{this.state.lastUpdated}</Col>
+        </Row>
+        <Row>
+          <Col>Programs</Col>
+          <Col>{this.state.programIdOptions}</Col>
+        </Row>
+      </Container>
     );
   }
 }

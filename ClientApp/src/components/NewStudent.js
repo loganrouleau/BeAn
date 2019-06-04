@@ -7,8 +7,7 @@ import Select from "./Select";
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class NewStudent extends Component {
   state = {
-    toStudentInfo: false,
-    id: "",
+    redirectToStudentId: "",
     newStudent: {
       studentId: "",
       studentInitial: "",
@@ -66,14 +65,12 @@ export class NewStudent extends Component {
         responsedata = data.id;
       })
       .catch(err => console.error(err))
-      .then(() =>
-        this.setState(() => ({ toStudentInfo: true, id: responsedata }))
-      );
+      .then(() => this.setState(() => ({ redirectToStudentId: responsedata })));
   };
 
   render() {
-    if (this.state.toStudentInfo) {
-      return <Redirect to={"/students/" + this.state.id} />;
+    if (this.state.redirectToStudentId) {
+      return <Redirect to={"/students/" + this.state.redirectToStudentId} />;
     }
     return (
       <form name="enterStudentInfo" onSubmit={this.handleSubmit}>
