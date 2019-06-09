@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
+import Program from "./Program";
 
 export class Students extends Component {
   state = {
@@ -17,12 +18,10 @@ export class Students extends Component {
   }
 
   async loadStudent() {
-    console.log(this.props);
     const response = await fetch("api/student/" + this.props.match.params.id, {
       headers: {}
     });
     const data = await response.json();
-    console.log(data);
     this.setState({
       studentId: data.studentId,
       studentInitial: data.studentInitial,
@@ -30,28 +29,39 @@ export class Students extends Component {
       programId: data.programId,
       lastUpdated: data.lastUpdated
     });
-    console.log(this.state);
   }
 
   async populateProgramData() {
     //const token = await authService.getAccessToken();
-    console.log("About to fetch ");
     const response = await fetch(
-      "api/student/programs/" + this.props.match.params.id,
-      {
-        headers: {}
-      }
+      "api/student/programs/" + this.props.match.params.id
     );
     const data = await response.json();
-    console.log(data);
     this.setState({
-      programIdOptions: Object.keys(data).map(i => data[i].name)
+      programIdOptions: data
     });
+  }
+
+  renderPrograms() {
+    if (this.state.programIdOptions.length > 0) {
+      return (
+        <ul>
+          {this.state.programIdOptions.map(p => (
+            <li key={p.id}>
+              <Program program={p} />
+            </li>
+          ))}
+        </ul>
+      );
+    } else {
+      return <p>No programs for this student</p>;
+    }
   }
 
   render() {
     return (
       <Container>
+        <h1>Student Information</h1>
         <Row>
           <Col>Student ID</Col>
           <Col>{this.state.studentId}</Col>
@@ -64,10 +74,8 @@ export class Students extends Component {
           <Col>Last Updated</Col>
           <Col>{this.state.lastUpdated}</Col>
         </Row>
-        <Row>
-          <Col>Programs</Col>
-          <Col>{this.state.programIdOptions}</Col>
-        </Row>
+        <h1>Programs</h1>
+        {this.renderPrograms()}
       </Container>
     );
   }

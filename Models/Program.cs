@@ -15,7 +15,7 @@ namespace BeAn.Models
 
         public DateTime LastUpdated { get; set; }
 
-        [ForeignKey("StudentId")]
+        [ForeignKey("StudentId")] // TODO: Annotation may not be necessary
         public virtual Student Student { get; set; }
     }
 
