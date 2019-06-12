@@ -1,5 +1,4 @@
 import React from "react";
-// import Select from 'react-select';
 
 const Select = props => {
   return (
@@ -17,8 +16,8 @@ const Select = props => {
         </option>
         {props.options.map(option => {
           return (
-            <option key={option} value={option} label={option}>
-              {option}
+            <option key={option.id} value={option.id} label={option.name}>
+              {option.name}
             </option>
           );
         })}

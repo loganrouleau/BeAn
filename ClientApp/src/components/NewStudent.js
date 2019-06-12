@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import Input from "./Input";
 import TextArea from "./TextArea";
-import Select from "./Select";
 
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class NewStudent extends Component {
@@ -11,10 +10,8 @@ export class NewStudent extends Component {
     newStudent: {
       studentId: "",
       studentInitial: "",
-      remark: "",
-      programId: ""
-    },
-    programIdOptions: []
+      remark: ""
+    }
   };
 
   handleInput = event => {
@@ -30,22 +27,6 @@ export class NewStudent extends Component {
       () => console.log(this.state.newStudent)
     );
   };
-
-  componentDidMount() {
-    this.populateProgramData();
-  }
-
-  async populateProgramData() {
-    //const token = await authService.getAccessToken();
-    const response = await fetch("api/Program", {
-      headers: {}
-    });
-    const data = await response.json();
-    console.log(data);
-    this.setState({
-      programIdOptions: Object.keys(data).map(i => data[i].name)
-    });
-  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -100,15 +81,6 @@ export class NewStudent extends Component {
           name={"remark"}
           handleChange={this.handleInput}
           placeholder={"Any additional information"}
-        />
-        {/* Program ID (to be removed for another page) */}
-        <Select
-          title={"Program ID"}
-          name={"programId"}
-          value={this.state.newStudent.programId}
-          options={this.state.programIdOptions}
-          handleChange={this.handleInput}
-          placeholder={"Select Program"}
         />
         <input type="submit" value="Submit" />
       </form>
