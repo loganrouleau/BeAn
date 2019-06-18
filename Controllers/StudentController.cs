@@ -41,5 +41,11 @@ namespace BeAn.Controllers
             return _context.Students.Where(s => s.Id.Equals(id)).First();
         }
 
+        [HttpGet]
+        public IEnumerable<Student> GetAll()
+        {
+            return _context.Students.ToList();
+        }
+
     }
 }
