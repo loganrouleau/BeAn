@@ -24,9 +24,9 @@ export class ListStudents extends Component {
         <ul>
           {this.state.students.map(s => (
             <li key={s.id}>
-              <p>
+              <a href={"/students/" + s.id}>
                 Name: {s.studentId} Id: {s.id}
-              </p>
+              </a>
             </li>
           ))}
         </ul>

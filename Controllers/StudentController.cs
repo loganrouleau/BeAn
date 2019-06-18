@@ -29,6 +29,14 @@ namespace BeAn.Controllers
             return Json(new { id = student.Id });
         }
 
+        [HttpPost("{id}")]
+        public IActionResult SaveStudent([FromBody] Models.Student student)
+        {
+            _context.Students.Update(student);
+            _context.SaveChanges();
+            return Ok();
+        }
+
         [HttpGet("programs/{id}")]
         public IEnumerable<Program> GetPrograms(int id)
         {

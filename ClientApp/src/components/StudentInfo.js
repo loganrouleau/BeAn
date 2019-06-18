@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Program from "./Program";
 import Select from "./Select";
+import { Redirect } from "react-router-dom";
 
-export class Students extends Component {
+export class StudentInfo extends Component {
   state = {
+    editStudentRedirect: false,
     studentId: "",
     studentInitial: "",
     remark: "",
@@ -85,33 +87,63 @@ export class Students extends Component {
     }));
   };
 
+  handleEditStudentRedirect = () => {
+    if (this.state.editStudentRedirect === false) {
+      this.setState({
+        editStudentRedirect: true
+      });
+    }
+  };
+
   render() {
-    return (
-      <Container>
-        <h1>Student Information</h1>
-        <Row>
-          <Col>Student ID</Col>
-          <Col>{this.state.studentId}</Col>
-        </Row>
-        <Row>
-          <Col>Remark</Col>
-          <Col>{this.state.remark}</Col>
-        </Row>
-        <Row>
-          <Col>Last Updated</Col>
-          <Col>{this.state.lastUpdated}</Col>
-        </Row>
-        <h1>Programs</h1>
-        {this.renderPrograms()}
-        <Select
-          title="Add existing Program"
-          name={"addProgram"}
-          value=""
-          options={this.state.addProgramOptions}
-          handleChange={this.handleProgramSelectInput}
-          placeholder={"Select Program"}
+    if (this.state.editStudentRedirect) {
+      let path = "/students/" + this.props.match.params.id + "/edit";
+      return (
+        <Redirect
+          to={{
+            pathname: path,
+            student: {
+              studentId: this.state.studentId,
+              studentInitial: this.state.studentInitial,
+              remark: this.state.remark
+            }
+          }}
         />
-      </Container>
-    );
+      );
+    } else {
+      return (
+        <Container>
+          <h1>Student Information</h1>
+          <Row>
+            <Col>Student ID</Col>
+            <Col>{this.state.studentId}</Col>
+          </Row>
+          <Row>
+            <Col>Remark</Col>
+            <Col>{this.state.remark}</Col>
+          </Row>
+          <Row>
+            <Col>Last Updated</Col>
+            <Col>{this.state.lastUpdated}</Col>
+          </Row>
+          <button
+            className="btn btn-primary"
+            onClick={this.handleEditStudentRedirect}
+          >
+            Edit Student
+          </button>
+          <h1>Programs</h1>
+          {this.renderPrograms()}
+          <Select
+            title="Add existing Program"
+            name={"addProgram"}
+            value=""
+            options={this.state.addProgramOptions}
+            handleChange={this.handleProgramSelectInput}
+            placeholder={"Select Program"}
+          />
+        </Container>
+      );
+    }
   }
 }
