@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { Container } from "reactstrap";
 
-export class ListStudents extends Component {
+export class MyStudents extends Component {
   state = {
     newStudentRedirect: false,
     students: []
@@ -50,7 +50,7 @@ export class ListStudents extends Component {
     } else {
       return (
         <Container>
-          <h1>Students</h1>
+          <h1>My Students</h1>
           <button
             className="btn btn-primary"
             onClick={this.handleNewStudentRedirect}

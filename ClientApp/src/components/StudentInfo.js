@@ -7,6 +7,7 @@ import { Redirect } from "react-router-dom";
 export class StudentInfo extends Component {
   state = {
     editStudentRedirect: false,
+    myStudentsRedirect: false,
     studentId: "",
     studentInitial: "",
     remark: "",
@@ -95,6 +96,14 @@ export class StudentInfo extends Component {
     }
   };
 
+  handleMyStudentsRedirect = () => {
+    if (this.state.myStudentsRedirect === false) {
+      this.setState({
+        myStudentsRedirect: true
+      });
+    }
+  };
+
   render() {
     if (this.state.editStudentRedirect) {
       let path = "/students/" + this.props.match.params.id + "/edit";
@@ -110,10 +119,34 @@ export class StudentInfo extends Component {
           }}
         />
       );
+    } else if (this.state.myStudentsRedirect){
+      let path = "/students";
+      return (
+        <Redirect
+          to={{
+            pathname: path,
+          }}
+        />
+      );
     } else {
       return (
+        
         <Container>
           <h1>Student Information</h1>
+          <button
+            className="btn btn-primary"
+            onClick={this.handleMyStudentsRedirect}
+          >
+            Back to My Students
+          </button>
+        
+          <button
+            className="btn btn-primary"
+            onClick={this.handleEditStudentRedirect}
+          >
+            Edit Student
+          </button>
+          
           <Row>
             <Col>Student ID</Col>
             <Col>{this.state.studentId}</Col>
@@ -126,13 +159,8 @@ export class StudentInfo extends Component {
             <Col>Last Updated</Col>
             <Col>{this.state.lastUpdated}</Col>
           </Row>
-          <button
-            className="btn btn-primary"
-            onClick={this.handleEditStudentRedirect}
-          >
-            Edit Student
-          </button>
-          <h1>Programs</h1>
+          
+          <h2>Programs</h2>
           {this.renderPrograms()}
           <Select
             title="Add existing Program"

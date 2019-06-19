@@ -4,7 +4,7 @@ import Input from "./Input";
 import TextArea from "./TextArea";
 
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
-export class EditStudent extends Component {
+export class StudentInfoUpdate extends Component {
   state = {
     redirectToStudentId: "",
     student: {
@@ -22,6 +22,12 @@ export class EditStudent extends Component {
       this.state.student.remark = props.location.student.remark;
     }
   }
+
+  handleStudentIdRedirect = () => {
+      this.setState(() => ({
+        redirectToStudentId: this.props.match.params.id
+      }));
+  };
 
   handleInput = event => {
     let value = event.target.value;
@@ -83,6 +89,7 @@ export class EditStudent extends Component {
     }
   };
 
+
   render() {
     console.log(this.props);
     if (this.state.redirectToStudentId) {
@@ -90,7 +97,14 @@ export class EditStudent extends Component {
     }
     return (
       <div>
-        <h1>New Student</h1>
+        <h1>Student Information Update</h1>
+        <button
+          className="btn btn-primary"
+          onClick={this.handleStudentIdRedirect}
+        >
+          Back
+        </button>
+          
         <form name="enterStudentInfo" onSubmit={this.handleSubmit}>
           {/* Student ID */}
           <Input
