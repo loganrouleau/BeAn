@@ -17,6 +17,9 @@ export default class App extends Component {
   render() {
     return (
       <Layout>
+        {/* <Provider store={props.store}>
+        <Router history={browserHistory} routes={routes} />
+        </Provider> */}
         <Route exact path="/" component={Home} />
         <Route path="/counter" component={Counter} />
         <AuthorizeRoute path="/fetch-data" component={FetchData} />

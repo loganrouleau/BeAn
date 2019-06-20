@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import Input from "./Input";
 import TextArea from "./TextArea";
+//import { browserHistory } from 'react-router';
+//import { createStackNavigator, createAppContainer } from "react-navigation";
 
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class StudentInfoUpdate extends Component {
@@ -16,6 +18,7 @@ export class StudentInfoUpdate extends Component {
 
   constructor(props) {
     super(props);
+    //this.goBack = this.goBack.bind(this);
     if (props.location.student) {
       this.state.student.studentId = props.location.student.studentId;
       this.state.student.studentInitial = props.location.student.studentInitial;
@@ -23,6 +26,9 @@ export class StudentInfoUpdate extends Component {
     }
   }
 
+  // goBack(){
+  //   this.props.history.goBack();
+  // }
   handleStudentIdRedirect = () => {
       this.setState(() => ({
         redirectToStudentId: this.props.match.params.id
@@ -89,6 +95,10 @@ export class StudentInfoUpdate extends Component {
     }
   };
 
+  // handleTestClick= () =>{
+  //   browserHistory.goBack();
+  // };
+
 
   render() {
     console.log(this.props);
@@ -98,13 +108,15 @@ export class StudentInfoUpdate extends Component {
     return (
       <div>
         <h1>Student Information Update</h1>
-        <button
+        {/* <button
           className="btn btn-primary"
           onClick={this.handleStudentIdRedirect}
         >
           Back
-        </button>
-          
+        </button> */}
+        <button className="btn btn-primary" onClick={() => this.props.history.goBack()}>Go Back</button>
+        {/* <button className="btn btn-primary" onClick={handleTestClick}>test</button> */}
+        
         <form name="enterStudentInfo" onSubmit={this.handleSubmit}>
           {/* Student ID */}
           <Input
