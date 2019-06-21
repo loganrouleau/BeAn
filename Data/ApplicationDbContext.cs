@@ -20,6 +20,7 @@ namespace BeAn.Data
 
         public DbSet<Program> Programs { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<Target> Targets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +34,10 @@ namespace BeAn.Data
                 .Property(s => s.LastUpdated)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("datetime('now')");
+            modelBuilder.Entity<Target>()
+                .Property(t => t.LastUpdated)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("datetime('now')");
 
             modelBuilder.Entity<Program>().HasData(
                 new { Id = -1, Name = "Program B", Description = "words", StudentId = -1 },
@@ -44,6 +49,31 @@ namespace BeAn.Data
                 new Student() { Id = -1, StudentId = "id1", StudentInitial = "A.A", Remark = "Hi" },
                 new Student() { Id = -2, StudentId = "id2", StudentInitial = "B.B", Remark = "Hello" },
                 new Student() { Id = -3, StudentId = "id3", StudentInitial = "C.C", Remark = "Bye" }
+            );
+
+            modelBuilder.Entity<Target>().HasData(
+                new
+                {
+                    Id = -1,
+                    Name = "targetName1",
+                    Type = "targettype1",
+                    PromptLevel = "promptlevel1",
+                    MasteryCriteria = 0.80,
+                    MinTrial = 2,
+                    MaxTrial = 4,
+                    ProgramId = -3
+                },
+                new
+                {
+                    Id = -2,
+                    Name = "targetName2",
+                    Type = "targettype2",
+                    PromptLevel = "promptlevel2",
+                    MasteryCriteria = 323.0,
+                    MinTrial = 1,
+                    MaxTrial = 5,
+                    ProgramId = -2
+                }
             );
         }
     }

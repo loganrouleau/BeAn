@@ -156,6 +156,60 @@ namespace BeAn.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BeAn.Models.Target", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("datetime('now')");
+
+                    b.Property<double>("MasteryCriteria");
+
+                    b.Property<int>("MaxTrial");
+
+                    b.Property<int>("MinTrial");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("ProgramId");
+
+                    b.Property<string>("PromptLevel");
+
+                    b.Property<string>("Type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
+
+                    b.ToTable("Targets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            MasteryCriteria = 0.80000000000000004,
+                            MaxTrial = 4,
+                            MinTrial = 2,
+                            Name = "targetName1",
+                            ProgramId = -3,
+                            PromptLevel = "promptlevel1",
+                            Type = "targettype1"
+                        },
+                        new
+                        {
+                            Id = -2,
+                            MasteryCriteria = 323.0,
+                            MaxTrial = 5,
+                            MinTrial = 1,
+                            Name = "targetName2",
+                            ProgramId = -2,
+                            PromptLevel = "promptlevel2",
+                            Type = "targettype2"
+                        });
+                });
+
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
                 {
                     b.Property<string>("UserCode")
@@ -335,6 +389,13 @@ namespace BeAn.Data.Migrations
                     b.HasOne("BeAn.Models.Student", "Student")
                         .WithMany("Programs")
                         .HasForeignKey("StudentId");
+                });
+
+            modelBuilder.Entity("BeAn.Models.Target", b =>
+                {
+                    b.HasOne("BeAn.Models.Program", "Program")
+                        .WithMany("Targets")
+                        .HasForeignKey("ProgramId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

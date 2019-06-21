@@ -17,6 +17,8 @@ namespace BeAn.Models
 
         [ForeignKey("StudentId")] // TODO: Annotation may not be necessary
         public virtual Student Student { get; set; }
+
+        public virtual ICollection<Target> Targets { get; set; }
     }
 
 }
