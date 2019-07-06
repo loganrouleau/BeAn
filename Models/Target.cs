@@ -18,8 +18,6 @@ namespace BeAn.Models
 
         public string PromptLevel { get; set; }
 
-        public double MasteryCriteria { get; set; }
-
         public int MinTrial { get; set; }
 
         public int MaxTrial { get; set; }

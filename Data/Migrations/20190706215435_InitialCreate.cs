@@ -210,6 +210,10 @@ namespace BeAn.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
+                    ProgramComplete = table.Column<int>(nullable: false),
+                    MasteryCriteriaCompareType = table.Column<int>(nullable: false),
+                    MasteryCriteriaCompareTo = table.Column<double>(nullable: false),
+                    MasteryCriteriaConsecutiveSessions = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
                     StudentId = table.Column<int>(nullable: true)
                 },
@@ -225,6 +229,28 @@ namespace BeAn.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sessions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Description = table.Column<string>(nullable: true),
+                    StartDateTime = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
+                    EndDateTime = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
+                    StudentId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sessions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Sessions_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Targets",
                 columns: table => new
                 {
@@ -233,7 +259,6 @@ namespace BeAn.Data.Migrations
                     Name = table.Column<string>(nullable: true),
                     Type = table.Column<string>(nullable: true),
                     PromptLevel = table.Column<string>(nullable: true),
-                    MasteryCriteria = table.Column<double>(nullable: false),
                     MinTrial = table.Column<int>(nullable: false),
                     MaxTrial = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
@@ -246,6 +271,41 @@ namespace BeAn.Data.Migrations
                         name: "FK_Targets_Programs_ProgramId",
                         column: x => x.ProgramId,
                         principalTable: "Programs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SessionDatas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Data = table.Column<int>(nullable: false),
+                    LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
+                    SessionId = table.Column<int>(nullable: true),
+                    ProgramId = table.Column<int>(nullable: true),
+                    TargetId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SessionDatas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SessionDatas_Programs_ProgramId",
+                        column: x => x.ProgramId,
+                        principalTable: "Programs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SessionDatas_Sessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "Sessions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SessionDatas_Targets_TargetId",
+                        column: x => x.TargetId,
+                        principalTable: "Targets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -267,28 +327,38 @@ namespace BeAn.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Programs",
-                columns: new[] { "Id", "Description", "Name", "StudentId" },
-                values: new object[] { -1, "words", "Program B", -1 });
+                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "StudentId" },
+                values: new object[] { -1, "words", 2.0299999999999998, 2, 3, "Program B", 0, -1 });
 
             migrationBuilder.InsertData(
                 table: "Programs",
-                columns: new[] { "Id", "Description", "Name", "StudentId" },
-                values: new object[] { -3, "descwords", "Program A", -1 });
+                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "StudentId" },
+                values: new object[] { -3, "descwords", 1.0, 1, 5, "Program A", 0, -1 });
 
             migrationBuilder.InsertData(
                 table: "Programs",
-                columns: new[] { "Id", "Description", "Name", "StudentId" },
-                values: new object[] { -2, "morewords", "Program C", -2 });
+                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "StudentId" },
+                values: new object[] { -2, "morewords", 2.3300000000000001, 2, 4, "Program C", 1, -2 });
+
+            migrationBuilder.InsertData(
+                table: "Sessions",
+                columns: new[] { "Id", "Description", "StudentId" },
+                values: new object[] { -1, "id1", -3 });
 
             migrationBuilder.InsertData(
                 table: "Targets",
-                columns: new[] { "Id", "MasteryCriteria", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
-                values: new object[] { -1, 0.80000000000000004, 4, 2, "targetName1", -3, "promptlevel1", "targettype1" });
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -1, 4, 2, "targetName1", -3, "promptlevel1", "targettype1" });
 
             migrationBuilder.InsertData(
                 table: "Targets",
-                columns: new[] { "Id", "MasteryCriteria", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
-                values: new object[] { -2, 323.0, 5, 1, "targetName2", -2, "promptlevel2", "targettype2" });
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -2, 5, 1, "targetName2", -2, "promptlevel2", "targettype2" });
+
+            migrationBuilder.InsertData(
+                table: "SessionDatas",
+                columns: new[] { "Id", "Data", "ProgramId", "SessionId", "TargetId" },
+                values: new object[] { -1, 453, -2, -1, -2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -344,6 +414,26 @@ namespace BeAn.Data.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SessionDatas_ProgramId",
+                table: "SessionDatas",
+                column: "ProgramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SessionDatas_SessionId",
+                table: "SessionDatas",
+                column: "SessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SessionDatas_TargetId",
+                table: "SessionDatas",
+                column: "TargetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sessions_StudentId",
+                table: "Sessions",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Targets_ProgramId",
                 table: "Targets",
                 column: "ProgramId");
@@ -373,13 +463,19 @@ namespace BeAn.Data.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "Targets");
+                name: "SessionDatas");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Sessions");
+
+            migrationBuilder.DropTable(
+                name: "Targets");
 
             migrationBuilder.DropTable(
                 name: "Programs");

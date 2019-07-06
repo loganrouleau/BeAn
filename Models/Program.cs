@@ -13,6 +13,14 @@ namespace BeAn.Models
 
         public string Description { get; set; }
 
+        public int ProgramComplete { get; set; }
+
+        public int MasteryCriteriaCompareType { get; set; }
+
+        public double MasteryCriteriaCompareTo { get; set; }
+
+        public int MasteryCriteriaConsecutiveSessions { get; set; }
+
         public DateTime LastUpdated { get; set; }
 
         [ForeignKey("StudentId")] // TODO: Annotation may not be necessary

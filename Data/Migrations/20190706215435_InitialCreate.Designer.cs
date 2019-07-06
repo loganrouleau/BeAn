@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeAn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190621034052_InitialCreate")]
+    [Migration("20190706215435_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,7 +78,15 @@ namespace BeAn.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("datetime('now')");
 
+                    b.Property<double>("MasteryCriteriaCompareTo");
+
+                    b.Property<int>("MasteryCriteriaCompareType");
+
+                    b.Property<int>("MasteryCriteriaConsecutiveSessions");
+
                     b.Property<string>("Name");
+
+                    b.Property<int>("ProgramComplete");
 
                     b.Property<int?>("StudentId");
 
@@ -93,22 +101,104 @@ namespace BeAn.Data.Migrations
                         {
                             Id = -1,
                             Description = "words",
+                            MasteryCriteriaCompareTo = 2.0299999999999998,
+                            MasteryCriteriaCompareType = 2,
+                            MasteryCriteriaConsecutiveSessions = 3,
                             Name = "Program B",
+                            ProgramComplete = 0,
                             StudentId = -1
                         },
                         new
                         {
                             Id = -2,
                             Description = "morewords",
+                            MasteryCriteriaCompareTo = 2.3300000000000001,
+                            MasteryCriteriaCompareType = 2,
+                            MasteryCriteriaConsecutiveSessions = 4,
                             Name = "Program C",
+                            ProgramComplete = 1,
                             StudentId = -2
                         },
                         new
                         {
                             Id = -3,
                             Description = "descwords",
+                            MasteryCriteriaCompareTo = 1.0,
+                            MasteryCriteriaCompareType = 1,
+                            MasteryCriteriaConsecutiveSessions = 5,
                             Name = "Program A",
+                            ProgramComplete = 0,
                             StudentId = -1
+                        });
+                });
+
+            modelBuilder.Entity("BeAn.Models.Session", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("datetime('now')");
+
+                    b.Property<DateTime>("StartDateTime")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("datetime('now')");
+
+                    b.Property<int?>("StudentId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Sessions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Description = "id1",
+                            StudentId = -3
+                        });
+                });
+
+            modelBuilder.Entity("BeAn.Models.SessionData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Data");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("datetime('now')");
+
+                    b.Property<int?>("ProgramId");
+
+                    b.Property<int?>("SessionId");
+
+                    b.Property<int?>("TargetId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgramId");
+
+                    b.HasIndex("SessionId");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("SessionDatas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            Data = 453,
+                            ProgramId = -2,
+                            SessionId = -1,
+                            TargetId = -2
                         });
                 });
 
@@ -167,8 +257,6 @@ namespace BeAn.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("datetime('now')");
 
-                    b.Property<double>("MasteryCriteria");
-
                     b.Property<int>("MaxTrial");
 
                     b.Property<int>("MinTrial");
@@ -191,7 +279,6 @@ namespace BeAn.Data.Migrations
                         new
                         {
                             Id = -1,
-                            MasteryCriteria = 0.80000000000000004,
                             MaxTrial = 4,
                             MinTrial = 2,
                             Name = "targetName1",
@@ -202,7 +289,6 @@ namespace BeAn.Data.Migrations
                         new
                         {
                             Id = -2,
-                            MasteryCriteria = 323.0,
                             MaxTrial = 5,
                             MinTrial = 1,
                             Name = "targetName2",
@@ -391,6 +477,28 @@ namespace BeAn.Data.Migrations
                     b.HasOne("BeAn.Models.Student", "Student")
                         .WithMany("Programs")
                         .HasForeignKey("StudentId");
+                });
+
+            modelBuilder.Entity("BeAn.Models.Session", b =>
+                {
+                    b.HasOne("BeAn.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+                });
+
+            modelBuilder.Entity("BeAn.Models.SessionData", b =>
+                {
+                    b.HasOne("BeAn.Models.Program", "Program")
+                        .WithMany()
+                        .HasForeignKey("ProgramId");
+
+                    b.HasOne("BeAn.Models.Session", "Session")
+                        .WithMany("SessionDatas")
+                        .HasForeignKey("SessionId");
+
+                    b.HasOne("BeAn.Models.Target", "Target")
+                        .WithMany()
+                        .HasForeignKey("TargetId");
                 });
 
             modelBuilder.Entity("BeAn.Models.Target", b =>
