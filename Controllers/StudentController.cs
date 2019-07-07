@@ -35,6 +35,7 @@ namespace BeAn.Controllers
             _context.Students.Update(student);
             _context.SaveChanges();
             return Ok();
+            
         }
 
         [HttpGet("programs/{id}")]

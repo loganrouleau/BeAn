@@ -87,7 +87,7 @@ namespace BeAn.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     StudentId = table.Column<string>(nullable: true),
-                    StudentInitial = table.Column<string>(nullable: true),
+                    StudentInitials = table.Column<string>(nullable: true),
                     Remark = table.Column<string>(nullable: true),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')")
                 },
@@ -283,9 +283,9 @@ namespace BeAn.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Data = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
-                    SessionId = table.Column<int>(nullable: true),
                     ProgramId = table.Column<int>(nullable: true),
-                    TargetId = table.Column<int>(nullable: true)
+                    TargetId = table.Column<int>(nullable: true),
+                    SessionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -312,17 +312,17 @@ namespace BeAn.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Students",
-                columns: new[] { "Id", "Remark", "StudentId", "StudentInitial" },
+                columns: new[] { "Id", "Remark", "StudentId", "StudentInitials" },
                 values: new object[] { -1, "Hi", "id1", "A.A" });
 
             migrationBuilder.InsertData(
                 table: "Students",
-                columns: new[] { "Id", "Remark", "StudentId", "StudentInitial" },
+                columns: new[] { "Id", "Remark", "StudentId", "StudentInitials" },
                 values: new object[] { -2, "Hello", "id2", "B.B" });
 
             migrationBuilder.InsertData(
                 table: "Students",
-                columns: new[] { "Id", "Remark", "StudentId", "StudentInitial" },
+                columns: new[] { "Id", "Remark", "StudentId", "StudentInitials" },
                 values: new object[] { -3, "Bye", "id3", "C.C" });
 
             migrationBuilder.InsertData(

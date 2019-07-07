@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeAn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190706215435_InitialCreate")]
+    [Migration("20190706233121_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -215,7 +215,7 @@ namespace BeAn.Data.Migrations
 
                     b.Property<string>("StudentId");
 
-                    b.Property<string>("StudentInitial");
+                    b.Property<string>("StudentInitials");
 
                     b.HasKey("Id");
 
@@ -228,7 +228,7 @@ namespace BeAn.Data.Migrations
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Remark = "Hi",
                             StudentId = "id1",
-                            StudentInitial = "A.A"
+                            StudentInitials = "A.A"
                         },
                         new
                         {
@@ -236,7 +236,7 @@ namespace BeAn.Data.Migrations
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Remark = "Hello",
                             StudentId = "id2",
-                            StudentInitial = "B.B"
+                            StudentInitials = "B.B"
                         },
                         new
                         {
@@ -244,7 +244,7 @@ namespace BeAn.Data.Migrations
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Remark = "Bye",
                             StudentId = "id3",
-                            StudentInitial = "C.C"
+                            StudentInitials = "C.C"
                         });
                 });
 
@@ -493,7 +493,7 @@ namespace BeAn.Data.Migrations
                         .HasForeignKey("ProgramId");
 
                     b.HasOne("BeAn.Models.Session", "Session")
-                        .WithMany("SessionDatas")
+                        .WithMany("SessionData")
                         .HasForeignKey("SessionId");
 
                     b.HasOne("BeAn.Models.Target", "Target")

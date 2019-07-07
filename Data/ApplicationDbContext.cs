@@ -62,9 +62,9 @@ namespace BeAn.Data
             );
 
             modelBuilder.Entity<Student>().HasData(
-                new Student() { Id = -1, StudentId = "id1", StudentInitial = "A.A", Remark = "Hi" },
-                new Student() { Id = -2, StudentId = "id2", StudentInitial = "B.B", Remark = "Hello" },
-                new Student() { Id = -3, StudentId = "id3", StudentInitial = "C.C", Remark = "Bye" }
+                new Student() { Id = -1, StudentId = "id1", StudentInitials = "A.A", Remark = "Hi" },
+                new Student() { Id = -2, StudentId = "id2", StudentInitials = "B.B", Remark = "Hello" },
+                new Student() { Id = -3, StudentId = "id3", StudentInitials = "C.C", Remark = "Bye" }
             );
 
             modelBuilder.Entity<Target>().HasData(

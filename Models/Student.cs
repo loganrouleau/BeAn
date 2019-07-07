@@ -10,7 +10,7 @@ namespace BeAn.Models
 
         public string StudentId { get; set; }
 
-        public string StudentInitial { get; set; }
+        public string StudentInitials { get; set; }
 
         public string Remark { get; set; }
 
