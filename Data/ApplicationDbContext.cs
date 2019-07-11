@@ -17,9 +17,8 @@ namespace BeAn.Data
         public DbSet<Program> Programs { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Target> Targets { get; set; }
-
+        public DbSet<Prompt> Prompts { get; set; }
         public DbSet<Session> Sessions { get; set; }
-
         public DbSet<SessionData> SessionDatas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

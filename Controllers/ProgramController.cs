@@ -21,10 +21,38 @@ namespace BeAn.Controllers
             _context = context;
         }
 
+        [HttpGet("{id}")]
+        public Program GetProgram(int id)
+        {
+            return _context.Programs.Where(p => p.Id.Equals(id)).First();
+        }
+
+        [HttpPost("{id}")]
+        public IActionResult SaveProgram([FromBody] Models.Program program)
+        {
+            _context.Programs.Update(program);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost("create")]
+        public IActionResult CreateProgram([FromBody] Models.Program program)
+        {
+            _context.Programs.Add(program);
+            _context.SaveChanges();
+            return Json(new { id = program.Id });
+        }
+
         [HttpGet]
         public IEnumerable<Program> GetAll()
         {
             return _context.Programs.ToList();
+        }
+
+        [HttpGet("targets/{id}")]
+        public IEnumerable<Target> GetTargets(int id)
+        {
+            return _context.Targets.Where(t => t.Program.Id == id).ToList();
         }
 
     }
