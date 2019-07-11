@@ -27,6 +27,7 @@ namespace BeAn.Models
         [ForeignKey("ProgramId")]
         public virtual Program Program { get; set; }
 
+        public virtual ICollection<Prompt> Prompts { get; set; }
     }
 
 }

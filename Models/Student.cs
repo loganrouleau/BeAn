@@ -17,6 +17,8 @@ namespace BeAn.Models
         public DateTime LastUpdated { get; set; }
 
         public virtual ICollection<Program> Programs { get; set; }
+
+        public virtual ICollection<Session> Sessions { get; set; }
     }
 
 }

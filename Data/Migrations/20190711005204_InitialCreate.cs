@@ -276,6 +276,30 @@ namespace BeAn.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Prompt",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Level = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    PromptLevelComplete = table.Column<int>(nullable: false),
+                    ConsecutiveSuccessfulSession = table.Column<int>(nullable: false),
+                    LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
+                    TargetId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Prompt", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Prompt_Targets_TargetId",
+                        column: x => x.TargetId,
+                        principalTable: "Targets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SessionDatas",
                 columns: table => new
                 {
@@ -343,22 +367,32 @@ namespace BeAn.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Sessions",
                 columns: new[] { "Id", "Description", "StudentId" },
-                values: new object[] { -1, "id1", -3 });
+                values: new object[] { -1, "session1", -3 });
 
             migrationBuilder.InsertData(
                 table: "Targets",
                 columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
-                values: new object[] { -1, 4, 2, "targetName1", -3, "promptlevel1", "targettype1" });
+                values: new object[] { -1, 4, 2, null, -3, null, "targettype1" });
 
             migrationBuilder.InsertData(
                 table: "Targets",
                 columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
-                values: new object[] { -2, 5, 1, "targetName2", -2, "promptlevel2", "targettype2" });
+                values: new object[] { -2, 5, 1, null, -2, null, "targettype2" });
+
+            migrationBuilder.InsertData(
+                table: "Prompt",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -1, 0, "prompt", 5, 4, -2 });
+
+            migrationBuilder.InsertData(
+                table: "Prompt",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -2, 1, "prompt", 4, 4, -2 });
 
             migrationBuilder.InsertData(
                 table: "SessionDatas",
                 columns: new[] { "Id", "Data", "ProgramId", "SessionId", "TargetId" },
-                values: new object[] { -1, 453, -2, -1, -2 });
+                values: new object[] { -1, 1, -2, -1, -2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -414,6 +448,11 @@ namespace BeAn.Data.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Prompt_TargetId",
+                table: "Prompt",
+                column: "TargetId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SessionDatas_ProgramId",
                 table: "SessionDatas",
                 column: "ProgramId");
@@ -461,6 +500,9 @@ namespace BeAn.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "PersistedGrants");
+
+            migrationBuilder.DropTable(
+                name: "Prompt");
 
             migrationBuilder.DropTable(
                 name: "SessionDatas");

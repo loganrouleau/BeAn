@@ -130,6 +130,52 @@ namespace BeAn.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("BeAn.Models.Prompt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ConsecutiveSuccessfulSession");
+
+                    b.Property<string>("Description");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasDefaultValueSql("datetime('now')");
+
+                    b.Property<int>("Level");
+
+                    b.Property<int>("PromptLevelComplete");
+
+                    b.Property<int?>("TargetId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TargetId");
+
+                    b.ToTable("Prompt");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = -1,
+                            ConsecutiveSuccessfulSession = 0,
+                            Description = "prompt",
+                            Level = 5,
+                            PromptLevelComplete = 4,
+                            TargetId = -2
+                        },
+                        new
+                        {
+                            Id = -2,
+                            ConsecutiveSuccessfulSession = 1,
+                            Description = "prompt",
+                            Level = 4,
+                            PromptLevelComplete = 4,
+                            TargetId = -2
+                        });
+                });
+
             modelBuilder.Entity("BeAn.Models.Session", b =>
                 {
                     b.Property<int>("Id")
@@ -157,7 +203,7 @@ namespace BeAn.Data.Migrations
                         new
                         {
                             Id = -1,
-                            Description = "id1",
+                            Description = "session1",
                             StudentId = -3
                         });
                 });
@@ -193,7 +239,7 @@ namespace BeAn.Data.Migrations
                         new
                         {
                             Id = -1,
-                            Data = 453,
+                            Data = 1,
                             ProgramId = -2,
                             SessionId = -1,
                             TargetId = -2
@@ -279,9 +325,7 @@ namespace BeAn.Data.Migrations
                             Id = -1,
                             MaxTrial = 4,
                             MinTrial = 2,
-                            Name = "targetName1",
                             ProgramId = -3,
-                            PromptLevel = "promptlevel1",
                             Type = "targettype1"
                         },
                         new
@@ -289,9 +333,7 @@ namespace BeAn.Data.Migrations
                             Id = -2,
                             MaxTrial = 5,
                             MinTrial = 1,
-                            Name = "targetName2",
                             ProgramId = -2,
-                            PromptLevel = "promptlevel2",
                             Type = "targettype2"
                         });
                 });
@@ -477,10 +519,17 @@ namespace BeAn.Data.Migrations
                         .HasForeignKey("StudentId");
                 });
 
+            modelBuilder.Entity("BeAn.Models.Prompt", b =>
+                {
+                    b.HasOne("BeAn.Models.Target", "Target")
+                        .WithMany("Prompts")
+                        .HasForeignKey("TargetId");
+                });
+
             modelBuilder.Entity("BeAn.Models.Session", b =>
                 {
                     b.HasOne("BeAn.Models.Student", "Student")
-                        .WithMany()
+                        .WithMany("Sessions")
                         .HasForeignKey("StudentId");
                 });
 
