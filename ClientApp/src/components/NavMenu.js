@@ -68,6 +68,11 @@ export class NavMenu extends Component {
                     Students
                   </NavLink>
                 </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/active-session">
+                    Record Data
+                  </NavLink>
+                </NavItem>
                 <LoginMenu />
               </ul>
             </Collapse>

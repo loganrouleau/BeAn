@@ -119,18 +119,17 @@ export class StudentInfo extends Component {
           }}
         />
       );
-    } else if (this.state.myStudentsRedirect){
+    } else if (this.state.myStudentsRedirect) {
       let path = "/students";
       return (
         <Redirect
           to={{
-            pathname: path,
+            pathname: path
           }}
         />
       );
     } else {
       return (
-        
         <Container>
           <h1>Student Information</h1>
           <button
@@ -139,14 +138,14 @@ export class StudentInfo extends Component {
           >
             Back to My Students
           </button>
-        
+
           <button
             className="btn btn-primary"
             onClick={this.handleEditStudentRedirect}
           >
             Edit Student
           </button>
-          
+
           <Row>
             <Col>Student ID</Col>
             <Col>{this.state.studentId}</Col>
@@ -159,7 +158,7 @@ export class StudentInfo extends Component {
             <Col>Last Updated</Col>
             <Col>{this.state.lastUpdated}</Col>
           </Row>
-          
+
           <h2>Programs</h2>
           {this.renderPrograms()}
           <Select
@@ -169,6 +168,7 @@ export class StudentInfo extends Component {
             options={this.state.addProgramOptions}
             handleChange={this.handleProgramSelectInput}
             placeholder={"Select Program"}
+            labelField="name"
           />
         </Container>
       );
