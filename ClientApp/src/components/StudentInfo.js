@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Program from "./Program";
-import Select from "./Select";
 import { Redirect } from "react-router-dom";
 
 export class StudentInfo extends Component {
@@ -9,7 +8,7 @@ export class StudentInfo extends Component {
     editStudentRedirect: false,
     myStudentsRedirect: false,
     studentId: "",
-    studentInitial: "",
+    studentInitials: "",
     remark: "",
     lastUpdated: "",
     programs: [],
@@ -27,7 +26,7 @@ export class StudentInfo extends Component {
     const data = await response.json();
     this.setState({
       studentId: data.studentId,
-      studentInitial: data.studentInitial,
+      studentInitials: data.studentInitials,
       remark: data.remark,
       lastUpdated: data.lastUpdated
     });
@@ -113,7 +112,7 @@ export class StudentInfo extends Component {
             pathname: path,
             student: {
               studentId: this.state.studentId,
-              studentInitial: this.state.studentInitial,
+              studentInitials: this.state.studentInitials,
               remark: this.state.remark
             }
           }}
@@ -149,6 +148,10 @@ export class StudentInfo extends Component {
           <Row>
             <Col>Student ID</Col>
             <Col>{this.state.studentId}</Col>
+          </Row>
+          <Row>
+            <Col>Student Initial</Col>
+            <Col>{this.state.studentInitials}</Col>
           </Row>
           <Row>
             <Col>Remark</Col>

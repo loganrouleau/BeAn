@@ -11,54 +11,44 @@ import Program from "./Program";
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class StudentInfoUpdate extends Component {
   state = {
-    redirectToStudentId: "",
+    redirectToStudentInfo: "",
     programs: [],
     addProgramOptions: [],
+    newlyAddedProgramIds: [],
     student: {
       studentId: "",
-      studentInitial: "",
+      studentInitials: "",
       remark: "",
-      lastUpdated: "",
-      //programs: [],
-      // addProgramOptions: []
+      lastUpdated: ""
     }
   };
 
   constructor(props) {
     super(props);
-    //this.goBack = this.goBack.bind(this);
-    console.log(props);
     if (props.location.student) {
-      // this.state.student.studentId = -2;
-      
       this.state.student.studentId = props.location.student.studentId;
-      this.state.student.studentInitial = props.location.student.studentInitial;
+      this.state.student.studentInitials =
+        props.location.student.studentInitials;
       this.state.student.remark = props.location.student.remark;
     }
   }
 
   componentDidMount() {
-    console.log(this.state.student);
-    console.log("componentDidMount");
     this.populateProgramData();
     this.getAddProgramOptions();
   }
 
   async populateProgramData() {
-    console.log("populateProgramData");
-    //const token = await authService.getAccessToken();
     const response = await fetch(
-      "api/student/programs/" + this.state.student.studentId
+      "api/student/programs/" + this.props.match.params.id
     );
     const data = await response.json();
-    console.log(data);
     this.setState({
       programs: data
     });
   }
 
   async getAddProgramOptions() {
-    console.log("getAddProgramOptions");
     const response = await fetch("api/program");
     let data = await response.json();
     data = data.filter(program => {
@@ -72,30 +62,19 @@ export class StudentInfoUpdate extends Component {
     this.setState({ addProgramOptions: data });
   }
 
-  //this may not be used. to be cleaned-up
-  handleStudentIdRedirect = () => {
-      this.setState(() => ({
-        redirectToStudentId: this.props.match.params.id
-      }));
-  };
-
   handleInput = event => {
     let value = event.target.value;
     let name = event.target.name;
-    this.setState(
-      prevState => ({
-        student: {
-          ...prevState.student,
-          [name]: value
-        }
-      }),
-      () => console.log(this.state.student)
-    );
+    this.setState(prevState => ({
+      student: {
+        ...prevState.student,
+        [name]: value
+      }
+    }));
   };
 
   //display programs associated with the student
   renderPrograms() {
-    console.log("renderProgram");
     if (this.state.programs.length > 0) {
       return (
         <ul>
@@ -121,11 +100,12 @@ export class StudentInfoUpdate extends Component {
       ],
       addProgramOptions: state.addProgramOptions.filter(
         p => p.id.toString(10) !== eventId
-      )
+      ),
+      newlyAddedProgramIds: [...state.newlyAddedProgramIds, eventId]
     }));
   };
 
-  //2019-07-12 TODO: update code to saving program associated with a student
+  //2019-07-13 TODO: last updated time not changing after save
   handleSubmit = event => {
     event.preventDefault();
     if (this.props.location.student) {
@@ -134,8 +114,10 @@ export class StudentInfoUpdate extends Component {
         {
           method: "POST",
           body: JSON.stringify({
-            ...this.state.student,
-            id: this.props.match.params.id
+            id: this.props.match.params.id,
+            studentId: this.state.student.studentId,
+            studentInitials: this.state.student.studentInitials,
+            remark: this.state.student.remark
           }),
           cache: "no-cache",
           headers: {
@@ -146,49 +128,73 @@ export class StudentInfoUpdate extends Component {
         .catch(err => console.error(err))
         .then(() =>
           this.setState(() => ({
-            redirectToStudentId: this.props.match.params.id
+            redirectToStudentInfo: this.props.match.params.id
           }))
         );
     } else {
       let url = "https://localhost:5001/api/Student/create";
-      let responsedata;
       fetch(url, {
         method: "POST",
-        body: JSON.stringify(this.state.student),
+        body: JSON.stringify({
+          studentId: this.state.student.studentId,
+          studentInitials: this.state.student.studentInitials,
+          remark: this.state.student.remark
+        }),
         cache: "no-cache",
         headers: {
           "content-type": "application/json"
         }
       })
         .then(response => response.json())
-        .then(data => {
-          console.log("Successful" + data);
-          responsedata = data.id;
+        .then(newStudent => {
+          console.log("Successful" + newStudent);
+          this.setState(() => ({
+            redirectToStudentInfo: newStudent.id
+          }));
         })
-        .catch(err => console.error(err))
-        .then(() =>
-          this.setState(() => ({ redirectToStudentId: responsedata }))
-        );
+        .catch(err => console.error(err));
     }
+    this.savePrograms();
   };
 
+  // TODO: July 13th - Save programs is not working
+  savePrograms() {
+    this.state.newlyAddedProgramIds.forEach(program => {
+      let fullProgram;
+      fetch("api/program/" + program)
+        .then(data => console.log(JSON.stringify(data)))
+        .catch(err => console.error(err));
+
+      let url = "https://localhost:5001/api/program/" + program;
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          id: program,
+          studentId: this.props.match.params.id
+        }),
+        cache: "no-cache",
+        headers: {
+          "content-type": "application/json"
+        }
+      }).catch(err => console.error(err));
+    });
+  }
+
   render() {
-    console.log("render");
-    if (this.state.redirectToStudentId) {
-      return <Redirect to={"/students/" + this.state.redirectToStudentId} />;
+    if (this.state.redirectToStudentInfo) {
+      return <Redirect to={"/students/" + this.state.redirectToStudentInfo} />;
     }
     return (
       <div>
         <h1>Student Information Update</h1>
-        {/* <button
+        <button
           className="btn btn-primary"
-          onClick={this.handleStudentIdRedirect}
+          onClick={() => this.props.history.goBack()}
         >
-          Back
-        </button> */}
-        <button className="btn btn-primary" onClick={() => this.props.history.goBack()}>Go Back</button>
+          Go Back
+        </button>
         {/* <button className="btn btn-primary" onClick={handleTestClick}>test</button> */}
-        
+
         <form name="enterStudentInfo" onSubmit={this.handleSubmit}>
           {/* Student ID */}
           <Input
@@ -203,8 +209,8 @@ export class StudentInfoUpdate extends Component {
           <Input
             inputType={"text"}
             title={"Student Initial"}
-            name={"studentInitial"}
-            value={this.state.student.studentInitial}
+            name={"studentInitials"}
+            value={this.state.student.studentInitials}
             placeholder={"Enter Student Initials"}
             handleChange={this.handleInput}
           />
@@ -217,9 +223,9 @@ export class StudentInfoUpdate extends Component {
             handleChange={this.handleInput}
             placeholder={"Any additional information"}
           />
-          
+
           {this.renderPrograms()}
-          <Select 
+          <Select
             title={"Add existing Program"}
             name={"addProgram"}
             value=""
