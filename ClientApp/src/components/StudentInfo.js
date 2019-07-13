@@ -161,7 +161,7 @@ export class StudentInfo extends Component {
 
           <h2>Programs</h2>
           {this.renderPrograms()}
-          <Select
+          {/* <Select
             title="Add existing Program"
             name={"addProgram"}
             value=""
@@ -169,7 +169,7 @@ export class StudentInfo extends Component {
             handleChange={this.handleProgramSelectInput}
             placeholder={"Select Program"}
             labelField="name"
-          />
+          /> */}
         </Container>
       );
     }

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import Input from "./Input";
 import TextArea from "./TextArea";
+import Select from "./Select";
+import Program from "./Program";
+
 //import { browserHistory } from 'react-router';
 //import { createStackNavigator, createAppContainer } from "react-navigation";
 
@@ -9,26 +12,67 @@ import TextArea from "./TextArea";
 export class StudentInfoUpdate extends Component {
   state = {
     redirectToStudentId: "",
+    programs: [],
+    addProgramOptions: [],
     student: {
       studentId: "",
       studentInitial: "",
-      remark: ""
+      remark: "",
+      lastUpdated: "",
+      //programs: [],
+      // addProgramOptions: []
     }
   };
 
   constructor(props) {
     super(props);
     //this.goBack = this.goBack.bind(this);
+    console.log(props);
     if (props.location.student) {
+      // this.state.student.studentId = -2;
+      
       this.state.student.studentId = props.location.student.studentId;
       this.state.student.studentInitial = props.location.student.studentInitial;
       this.state.student.remark = props.location.student.remark;
     }
   }
 
-  // goBack(){
-  //   this.props.history.goBack();
-  // }
+  componentDidMount() {
+    console.log(this.state.student);
+    console.log("componentDidMount");
+    this.populateProgramData();
+    this.getAddProgramOptions();
+  }
+
+  async populateProgramData() {
+    console.log("populateProgramData");
+    //const token = await authService.getAccessToken();
+    const response = await fetch(
+      "api/student/programs/" + this.state.student.studentId
+    );
+    const data = await response.json();
+    console.log(data);
+    this.setState({
+      programs: data
+    });
+  }
+
+  async getAddProgramOptions() {
+    console.log("getAddProgramOptions");
+    const response = await fetch("api/program");
+    let data = await response.json();
+    data = data.filter(program => {
+      for (var i = 0; i < this.state.programs.length; i++) {
+        if (this.state.programs[i].id === program.id) {
+          return false;
+        }
+      }
+      return true;
+    });
+    this.setState({ addProgramOptions: data });
+  }
+
+  //this may not be used. to be cleaned-up
   handleStudentIdRedirect = () => {
       this.setState(() => ({
         redirectToStudentId: this.props.match.params.id
@@ -49,6 +93,39 @@ export class StudentInfoUpdate extends Component {
     );
   };
 
+  //display programs associated with the student
+  renderPrograms() {
+    console.log("renderProgram");
+    if (this.state.programs.length > 0) {
+      return (
+        <ul>
+          {this.state.programs.map(p => (
+            <li key={p.id}>
+              <Program program={p} />
+            </li>
+          ))}
+        </ul>
+      );
+    } else {
+      return <p>No programs for this student</p>;
+    }
+  }
+
+  handleProgramSelectInput = event => {
+    let eventId = event.target.value;
+
+    this.setState(state => ({
+      programs: [
+        ...state.programs,
+        state.addProgramOptions.find(p => p.id.toString(10) === eventId)
+      ],
+      addProgramOptions: state.addProgramOptions.filter(
+        p => p.id.toString(10) !== eventId
+      )
+    }));
+  };
+
+  //2019-07-12 TODO: update code to saving program associated with a student
   handleSubmit = event => {
     event.preventDefault();
     if (this.props.location.student) {
@@ -95,13 +172,8 @@ export class StudentInfoUpdate extends Component {
     }
   };
 
-  // handleTestClick= () =>{
-  //   browserHistory.goBack();
-  // };
-
-
   render() {
-    console.log(this.props);
+    console.log("render");
     if (this.state.redirectToStudentId) {
       return <Redirect to={"/students/" + this.state.redirectToStudentId} />;
     }
@@ -144,6 +216,17 @@ export class StudentInfoUpdate extends Component {
             name={"remark"}
             handleChange={this.handleInput}
             placeholder={"Any additional information"}
+          />
+          
+          {this.renderPrograms()}
+          <Select 
+            title={"Add existing Program"}
+            name={"addProgram"}
+            value=""
+            options={this.state.addProgramOptions}
+            handleChange={this.handleProgramSelectInput}
+            placeholder={"Select Program"}
+            labelField={"name"}
           />
           <input type="submit" value="Submit" />
         </form>
