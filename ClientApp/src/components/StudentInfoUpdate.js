@@ -93,6 +93,15 @@ export class StudentInfoUpdate extends Component {
   handleProgramSelectInput = event => {
     let eventId = event.target.value;
 
+    // July 13th: Bug here. Only first submit shows new programs in UI.
+    console.log(eventId);
+    console.log(
+      JSON.stringify(
+        ...this.state.programs,
+        this.state.addProgramOptions.find(p => p.id.toString(10) === eventId)
+      )
+    );
+
     this.setState(state => ({
       programs: [
         ...state.programs,
@@ -157,26 +166,24 @@ export class StudentInfoUpdate extends Component {
     this.savePrograms();
   };
 
-  // TODO: July 13th - Save programs is not working
   savePrograms() {
     this.state.newlyAddedProgramIds.forEach(program => {
-      let fullProgram;
-      fetch("api/program/" + program)
-        .then(data => console.log(JSON.stringify(data)))
+      fetch("https://localhost:5001/api/program/" + program)
+        .then(response => response.json())
+        .then(json => {
+          fetch("https://localhost:5001/api/program/" + program, {
+            method: "POST",
+            body: JSON.stringify({
+              ...json,
+              studentId: this.props.match.params.id
+            }),
+            cache: "no-cache",
+            headers: {
+              "content-type": "application/json"
+            }
+          }).catch(err => console.error(err));
+        })
         .catch(err => console.error(err));
-
-      let url = "https://localhost:5001/api/program/" + program;
-      fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          id: program,
-          studentId: this.props.match.params.id
-        }),
-        cache: "no-cache",
-        headers: {
-          "content-type": "application/json"
-        }
-      }).catch(err => console.error(err));
     });
   }
 

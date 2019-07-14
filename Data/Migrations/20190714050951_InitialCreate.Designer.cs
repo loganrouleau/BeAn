@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeAn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190711005204_InitialCreate")]
+    [Migration("20190714050951_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,7 @@ namespace BeAn.Data.Migrations
 
                     b.Property<int>("ProgramComplete");
 
-                    b.Property<int?>("StudentId");
+                    b.Property<int>("StudentId");
 
                     b.HasKey("Id");
 
@@ -155,14 +155,14 @@ namespace BeAn.Data.Migrations
 
                     b.HasIndex("TargetId");
 
-                    b.ToTable("Prompt");
+                    b.ToTable("Prompts");
 
                     b.HasData(
                         new
                         {
                             Id = -1,
                             ConsecutiveSuccessfulSession = 0,
-                            Description = "prompt",
+                            Description = "prompt1",
                             Level = 5,
                             PromptLevelComplete = 4,
                             TargetId = -2
@@ -171,7 +171,7 @@ namespace BeAn.Data.Migrations
                         {
                             Id = -2,
                             ConsecutiveSuccessfulSession = 1,
-                            Description = "prompt",
+                            Description = "prompt2",
                             Level = 4,
                             PromptLevelComplete = 4,
                             TargetId = -2
@@ -518,7 +518,9 @@ namespace BeAn.Data.Migrations
                 {
                     b.HasOne("BeAn.Models.Student", "Student")
                         .WithMany("Programs")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BeAn.Models.Prompt", b =>

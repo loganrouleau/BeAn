@@ -215,7 +215,7 @@ namespace BeAn.Data.Migrations
                     MasteryCriteriaCompareTo = table.Column<double>(nullable: false),
                     MasteryCriteriaConsecutiveSessions = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
-                    StudentId = table.Column<int>(nullable: true)
+                    StudentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -225,7 +225,7 @@ namespace BeAn.Data.Migrations
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,7 +276,7 @@ namespace BeAn.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Prompt",
+                name: "Prompts",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -290,9 +290,9 @@ namespace BeAn.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Prompt", x => x.Id);
+                    table.PrimaryKey("PK_Prompts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Prompt_Targets_TargetId",
+                        name: "FK_Prompts_Targets_TargetId",
                         column: x => x.TargetId,
                         principalTable: "Targets",
                         principalColumn: "Id",
@@ -380,14 +380,14 @@ namespace BeAn.Data.Migrations
                 values: new object[] { -2, 5, 1, null, -2, null, "targettype2" });
 
             migrationBuilder.InsertData(
-                table: "Prompt",
+                table: "Prompts",
                 columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
-                values: new object[] { -1, 0, "prompt", 5, 4, -2 });
+                values: new object[] { -1, 0, "prompt1", 5, 4, -2 });
 
             migrationBuilder.InsertData(
-                table: "Prompt",
+                table: "Prompts",
                 columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
-                values: new object[] { -2, 1, "prompt", 4, 4, -2 });
+                values: new object[] { -2, 1, "prompt2", 4, 4, -2 });
 
             migrationBuilder.InsertData(
                 table: "SessionDatas",
@@ -448,8 +448,8 @@ namespace BeAn.Data.Migrations
                 column: "StudentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prompt_TargetId",
-                table: "Prompt",
+                name: "IX_Prompts_TargetId",
+                table: "Prompts",
                 column: "TargetId");
 
             migrationBuilder.CreateIndex(
@@ -502,7 +502,7 @@ namespace BeAn.Data.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "Prompt");
+                name: "Prompts");
 
             migrationBuilder.DropTable(
                 name: "SessionDatas");
