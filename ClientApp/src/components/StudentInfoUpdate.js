@@ -11,6 +11,7 @@ import Program from "./Program";
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class StudentInfoUpdate extends Component {
   state = {
+    programSaveComplete: false,
     redirectToStudentInfo: "",
     programs: [],
     addProgramOptions: [],
@@ -116,6 +117,8 @@ export class StudentInfoUpdate extends Component {
 
   //2019-07-13 TODO: last updated time not changing after save
   handleSubmit = event => {
+    this.savePrograms();
+    console.log("finished saving programs");
     event.preventDefault();
     if (this.props.location.student) {
       fetch(
@@ -135,11 +138,12 @@ export class StudentInfoUpdate extends Component {
         }
       )
         .catch(err => console.error(err))
-        .then(() =>
+        .then(() => {
+          console.log("finished posting changed student fields");
           this.setState(() => ({
             redirectToStudentInfo: this.props.match.params.id
-          }))
-        );
+          }));
+        });
     } else {
       let url = "https://localhost:5001/api/Student/create";
       fetch(url, {
@@ -163,7 +167,6 @@ export class StudentInfoUpdate extends Component {
         })
         .catch(err => console.error(err));
     }
-    this.savePrograms();
   };
 
   savePrograms() {
@@ -181,16 +184,21 @@ export class StudentInfoUpdate extends Component {
             headers: {
               "content-type": "application/json"
             }
-          }).catch(err => console.error(err));
+          })
+            .then(this.setState({ programSaveComplete: true }))
+            .then(console.log("program save complete"))
+            .catch(err => console.error(err));
         })
         .catch(err => console.error(err));
     });
   }
 
   render() {
-    if (this.state.redirectToStudentInfo) {
+    if (this.state.redirectToStudentInfo && this.state.programSaveComplete) {
+      console.log("redirecting");
       return <Redirect to={"/students/" + this.state.redirectToStudentInfo} />;
     }
+    console.log("programSaveCompelte " + this.state.programSaveComplete);
     return (
       <div>
         <h1>Student Information Update</h1>

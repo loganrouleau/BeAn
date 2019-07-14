@@ -32,19 +32,26 @@ export class StudentInfo extends Component {
     });
   }
 
-  async populateProgramData() {
+  populateProgramData() {
     //const token = await authService.getAccessToken();
-    const response = await fetch(
-      "api/student/programs/" + this.props.match.params.id
-    );
-    const data = await response.json();
-    this.setState({
-      programs: data
-    });
+    const response = fetch(
+      "https://localhost:5001/api/student/programs/" +
+        this.props.match.params.id,
+      { cache: "no-cache" }
+    )
+      .then(response => response.json())
+      .then(json => {
+        this.setState({
+          programs: json
+        });
+      });
+    //const data = await response.json();
+    console.log("received response in populateProgramData");
+    //console.log(data);
   }
 
   async getAddProgramOptions() {
-    const response = await fetch("api/program");
+    const response = await fetch("https://localhost:5001/api/program");
     let data = await response.json();
     data = data.filter(program => {
       for (var i = 0; i < this.state.programs.length; i++) {
