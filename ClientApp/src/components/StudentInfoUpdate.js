@@ -13,6 +13,7 @@ export class StudentInfoUpdate extends Component {
   state = {
     programSaveComplete: false,
     redirectToStudentInfo: "",
+    studentInfoRedirect: false,
     programs: [],
     addProgramOptions: [],
     newlyAddedProgramIds: [],
@@ -193,10 +194,33 @@ export class StudentInfoUpdate extends Component {
     });
   }
 
+  handleStudentInfoRedirect = () => {
+    if (this.state.studentInfoRedirect === false) {
+      this.setState({
+        studentInfoRedirect: true
+      });
+    }
+  };
+
   render() {
     if (this.state.redirectToStudentInfo && this.state.programSaveComplete) {
       console.log("redirecting");
       return <Redirect to={"/students/" + this.state.redirectToStudentInfo} />;
+    }else if (this.state.studentInfoRedirect) {
+      let path;
+      if(this.props.match.params.id===undefined){
+        path = "/students";
+      }else{
+        path = "/students/"+this.props.match.params.id;
+      }
+      console.log(path);
+      return (
+        <Redirect
+          to={{
+            pathname: path
+          }}
+        />
+      );
     }
     console.log("programSaveCompelte " + this.state.programSaveComplete);
     return (
@@ -204,7 +228,9 @@ export class StudentInfoUpdate extends Component {
         <h1>Student Information Update</h1>
         <button
           className="btn btn-primary"
-          onClick={() => this.props.history.goBack()}
+          // onClick={() => this.props.history.goBack()}
+          //onClick={() => this.props.history.goBack()}
+          onClick={this.handleStudentInfoRedirect}
         >
           Go Back
         </button>
