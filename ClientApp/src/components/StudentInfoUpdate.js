@@ -95,15 +95,6 @@ export class StudentInfoUpdate extends Component {
   handleProgramSelectInput = event => {
     let eventId = event.target.value;
 
-    // July 13th: Bug here. Only first submit shows new programs in UI.
-    console.log(eventId);
-    console.log(
-      JSON.stringify(
-        ...this.state.programs,
-        this.state.addProgramOptions.find(p => p.id.toString(10) === eventId)
-      )
-    );
-
     this.setState(state => ({
       programs: [
         ...state.programs,
@@ -119,8 +110,11 @@ export class StudentInfoUpdate extends Component {
   //2019-07-13 TODO: last updated time not changing after save
   handleSubmit = event => {
     this.savePrograms();
-    console.log("finished saving programs");
+    this.saveStudents();
     event.preventDefault();
+  };
+
+  saveStudents() {
     if (this.props.location.student) {
       fetch(
         "https://localhost:5001/api/student/" + this.props.match.params.id,
@@ -140,7 +134,6 @@ export class StudentInfoUpdate extends Component {
       )
         .catch(err => console.error(err))
         .then(() => {
-          console.log("finished posting changed student fields");
           this.setState(() => ({
             redirectToStudentInfo: this.props.match.params.id
           }));
@@ -161,24 +154,24 @@ export class StudentInfoUpdate extends Component {
       })
         .then(response => response.json())
         .then(newStudent => {
-          console.log("Successful" + newStudent);
           this.setState(() => ({
             redirectToStudentInfo: newStudent.id
           }));
         })
         .catch(err => console.error(err));
     }
-  };
+  }
 
   savePrograms() {
-    this.state.newlyAddedProgramIds.forEach(program => {
-      fetch("https://localhost:5001/api/program/" + program)
-        .then(response => response.json())
-        .then(json => {
-          fetch("https://localhost:5001/api/program/" + program, {
+    let promises = [];
+    this.getProgramsToSave().then(programsToSave => {
+      var i;
+      for (i = 0; i < programsToSave.length; i++) {
+        promises.push(
+          fetch("https://localhost:5001/api/program/" + programsToSave[i].id, {
             method: "POST",
             body: JSON.stringify({
-              ...json,
+              ...programsToSave[i],
               studentId: this.props.match.params.id
             }),
             cache: "no-cache",
@@ -186,12 +179,24 @@ export class StudentInfoUpdate extends Component {
               "content-type": "application/json"
             }
           })
-            .then(this.setState({ programSaveComplete: true }))
-            .then(console.log("program save complete"))
-            .catch(err => console.error(err));
-        })
-        .catch(err => console.error(err));
+        );
+      }
+      Promise.all(promises).then(() => {
+        this.setState({ programSaveComplete: true });
+      });
     });
+  }
+
+  getProgramsToSave() {
+    let promises = [];
+    this.state.newlyAddedProgramIds.forEach(program => {
+      promises.push(
+        fetch("https://localhost:5001/api/program/" + program)
+          .then(response => response.json())
+          .catch(err => console.error(err))
+      );
+    });
+    return Promise.all(promises);
   }
 
   handleStudentInfoRedirect = () => {
@@ -204,7 +209,6 @@ export class StudentInfoUpdate extends Component {
 
   render() {
     if (this.state.redirectToStudentInfo && this.state.programSaveComplete) {
-      console.log("redirecting");
       return <Redirect to={"/students/" + this.state.redirectToStudentInfo} />;
     }else if (this.state.studentInfoRedirect) {
       let path;
@@ -222,7 +226,6 @@ export class StudentInfoUpdate extends Component {
         />
       );
     }
-    console.log("programSaveCompelte " + this.state.programSaveComplete);
     return (
       <div>
         <h1>Student Information Update</h1>
