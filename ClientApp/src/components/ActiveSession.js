@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from "reactstrap";
-import Program from "./Program";
+import { Container } from "reactstrap";
 import Select from "./Select";
-import { Redirect } from "react-router-dom";
 
 export class ActiveSession extends Component {
   state = {
     isSessionActive: false,
     addStudentOptions: [],
-    selectedStudent: ""
+    addProgramOptions: [],
+    selectedStudent: "",
+    selectedProgram: ""
   };
 
   componentDidMount() {
@@ -21,11 +21,33 @@ export class ActiveSession extends Component {
     this.setState({ addStudentOptions: data });
   }
 
+  async getAddProgramOptions(studentId) {
+    console.log("getting program options for student: " + studentId);
+    console.log(this.state.selectedStudent);
+    const response = await fetch("api/student/programs/" + studentId);
+    let data = await response.json();
+    this.setState({ addProgramOptions: data });
+  }
+
   handleStudentSelectInput = event => {
-    let eventId = event.target.value;
+    let selectedStudentId = event.target.value;
+    console.log(selectedStudentId);
+
     this.setState(state => ({
       selectedStudent: state.addStudentOptions.find(
-        s => s.id.toString(10) === eventId
+        s => s.id.toString(10) === selectedStudentId
+      )
+    }));
+    console.log(this.state.selectedStudent);
+    console.log(this.state.addStudentOptions);
+    this.getAddProgramOptions(selectedStudentId);
+  };
+
+  handleProgramSelectInput = event => {
+    let selectedProgramId = event.target.value;
+    this.setState(state => ({
+      selectedProgram: state.addProgramOptions.find(
+        p => p.id.toString(10) === selectedProgramId
       )
     }));
   };
@@ -39,7 +61,7 @@ export class ActiveSession extends Component {
       this.setState({
         isSessionActive: true
       });
-      let url = "https://localhost:5001/api/Session/create";
+      let url = "api/session/create";
       let responsedata;
       fetch(url, {
         method: "POST",
@@ -51,7 +73,6 @@ export class ActiveSession extends Component {
       })
         .then(response => response.json())
         .then(data => {
-          console.log("Successful" + data);
           responsedata = data.id;
         })
         .catch(err => console.error(err))
@@ -62,43 +83,76 @@ export class ActiveSession extends Component {
   };
 
   render() {
-    console.log(this.state.selectedStudent);
     return (
       <Container>
         <h1>Record Data</h1>
-        {/* <Row>
-          <Col>Student ID</Col>
-          <Col>{this.state.studentId}</Col>
-        </Row> */}
-        {this.renderStudentSelect()}
+        {this.renderSelects()}
+        {this.renderButton()}
+      </Container>
+    );
+  }
+
+  renderButton() {
+    if (this.state.selectedStudent) {
+      return (
         <button
           className="btn btn-primary"
           onClick={this.handleStartStopSession}
         >
           {this.state.isSessionActive ? "End Session" : "Start Session"}
         </button>
-      </Container>
-    );
+      );
+    }
   }
 
-  renderStudentSelect() {
+  renderSelects() {
     if (this.state.isSessionActive) {
       return <h2>Record data! (WIP - Logan July 11th)</h2>;
     } else {
-      return (
-        <div>
-          <h2>Choose a student for the session</h2>
-          <Select
-            title="Select Student"
-            name={"addStudent"}
-            value={this.state.selectedStudent.id}
-            options={this.state.addStudentOptions}
-            handleChange={this.handleStudentSelectInput}
-            placeholder={"Select Student"}
-            labelField="studentId"
-          />
-        </div>
-      );
+      if (this.state.selectedStudent) {
+        return (
+          <div>
+            {this.renderStudentSelect()}
+            {this.renderProgramSelect()}
+          </div>
+        );
+      } else {
+        return this.renderStudentSelect();
+      }
     }
+  }
+
+  renderStudentSelect() {
+    return (
+      <div>
+        <h2>Choose a student for the session</h2>
+        <Select
+          title="Select Student"
+          name={"addStudent"}
+          value={this.state.selectedStudent.id}
+          options={this.state.addStudentOptions}
+          handleChange={this.handleStudentSelectInput}
+          placeholder={"Select Student"}
+          labelField="studentId"
+        />
+      </div>
+    );
+  }
+
+  renderProgramSelect() {
+    return (
+      <div>
+        <h2>Choose a starting program for the session</h2>
+        <Select
+          title="Select Program"
+          name={"addProgram"}
+          value={this.state.selectedProgram.id}
+          options={this.state.addProgramOptions}
+          handleChange={this.handleProgramSelectInput}
+          placeholder={"Select Program"}
+          labelField="name"
+        />
+      </div>
+    );
   }
 }

@@ -11,7 +11,7 @@ const Select = props => {
         onChange={props.handleChange}
         className="form-control"
       >
-        <option value="" disabled>
+        <option value="" disabled selected>
           {props.placeholder}
         </option>
         {props.options.map(option => {
