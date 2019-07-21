@@ -86,6 +86,8 @@ namespace BeAn.Data.Migrations
 
                     b.Property<int>("ProgramComplete");
 
+                    b.Property<bool>("Reusable");
+
                     b.Property<int>("StudentId");
 
                     b.HasKey("Id");
@@ -104,6 +106,7 @@ namespace BeAn.Data.Migrations
                             MasteryCriteriaConsecutiveSessions = 3,
                             Name = "Program B",
                             ProgramComplete = 0,
+                            Reusable = true,
                             StudentId = -1
                         },
                         new
@@ -115,6 +118,7 @@ namespace BeAn.Data.Migrations
                             MasteryCriteriaConsecutiveSessions = 4,
                             Name = "Program C",
                             ProgramComplete = 1,
+                            Reusable = true,
                             StudentId = -2
                         },
                         new
@@ -126,6 +130,7 @@ namespace BeAn.Data.Migrations
                             MasteryCriteriaConsecutiveSessions = 5,
                             Name = "Program A",
                             ProgramComplete = 0,
+                            Reusable = true,
                             StudentId = -1
                         });
                 });

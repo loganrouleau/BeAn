@@ -59,9 +59,9 @@ namespace BeAn.Data
         private void PopulateTestData(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Program>().HasData(
-                new { Id = -1, Name = "Program B", Description = "words", ProgramComplete = 0, MasteryCriteriaCompareType = 2, MasteryCriteriaCompareTo = 2.03, MasteryCriteriaConsecutiveSessions = 3, StudentId = -1 },
-                new { Id = -2, Name = "Program C", Description = "morewords", ProgramComplete = 1, MasteryCriteriaCompareType = 2, MasteryCriteriaCompareTo = 2.33, MasteryCriteriaConsecutiveSessions = 4, StudentId = -2 },
-                new { Id = -3, Name = "Program A", Description = "descwords", ProgramComplete = 0, MasteryCriteriaCompareType = 1, MasteryCriteriaCompareTo = 1.0, MasteryCriteriaConsecutiveSessions = 5, StudentId = -1 }
+                new { Id = -1, Name = "Program B", Description = "words", ProgramComplete = 0, MasteryCriteriaCompareType = 2, MasteryCriteriaCompareTo = 2.03, MasteryCriteriaConsecutiveSessions = 3, Reusable=true, StudentId = -1 },
+                new { Id = -2, Name = "Program C", Description = "morewords", ProgramComplete = 1, MasteryCriteriaCompareType = 2, MasteryCriteriaCompareTo = 2.33, MasteryCriteriaConsecutiveSessions = 4, Reusable=true, StudentId = -2 },
+                new { Id = -3, Name = "Program A", Description = "descwords", ProgramComplete = 0, MasteryCriteriaCompareType = 1, MasteryCriteriaCompareTo = 1.0, MasteryCriteriaConsecutiveSessions = 5, Reusable=true, StudentId = -1 }
             );
 
             modelBuilder.Entity<Student>().HasData(

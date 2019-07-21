@@ -47,7 +47,7 @@ namespace BeAn.Controllers
         [HttpGet]
         public IEnumerable<Program> GetAll()
         {
-            return _context.Programs.ToList();
+            return _context.Programs.Where(program => program.Reusable==true).ToList();
         }
 
         [HttpGet("targets/{id}")]

@@ -215,6 +215,7 @@ namespace BeAn.Data.Migrations
                     MasteryCriteriaCompareTo = table.Column<double>(nullable: false),
                     MasteryCriteriaConsecutiveSessions = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
+                    Reusable = table.Column<bool>(nullable: false),
                     StudentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -351,18 +352,18 @@ namespace BeAn.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Programs",
-                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "StudentId" },
-                values: new object[] { -1, "words", 2.0299999999999998, 2, 3, "Program B", 0, -1 });
+                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "Reusable", "StudentId" },
+                values: new object[] { -1, "words", 2.0299999999999998, 2, 3, "Program B", 0, true, -1 });
 
             migrationBuilder.InsertData(
                 table: "Programs",
-                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "StudentId" },
-                values: new object[] { -3, "descwords", 1.0, 1, 5, "Program A", 0, -1 });
+                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "Reusable", "StudentId" },
+                values: new object[] { -3, "descwords", 1.0, 1, 5, "Program A", 0, true, -1 });
 
             migrationBuilder.InsertData(
                 table: "Programs",
-                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "StudentId" },
-                values: new object[] { -2, "morewords", 2.3300000000000001, 2, 4, "Program C", 1, -2 });
+                columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "Reusable", "StudentId" },
+                values: new object[] { -2, "morewords", 2.3300000000000001, 2, 4, "Program C", 1, true, -2 });
 
             migrationBuilder.InsertData(
                 table: "Sessions",

@@ -53,14 +53,14 @@ export class StudentInfoUpdate extends Component {
   async getAddProgramOptions() {
     const response = await fetch("api/program");
     let data = await response.json();
-    data = data.filter(program => {
-      for (var i = 0; i < this.state.programs.length; i++) {
-        if (this.state.programs[i].id === program.id) {
-          return false;
-        }
-      }
-      return true;
-    });
+    // data = data.filter(program => {
+    //   for (var i = 0; i < this.state.programs.length; i++) {
+    //     if (this.state.programs[i].id === program.id) {
+    //       return false;
+    //     }
+    //   }
+    //   return true;
+    // });
     this.setState({ addProgramOptions: data });
   }
 
@@ -94,24 +94,30 @@ export class StudentInfoUpdate extends Component {
 
   handleProgramSelectInput = event => {
     let eventId = event.target.value;
-
+    let newProgram = Object.assign({},this.state.addProgramOptions.find(p => p.id.toString(10) === eventId));
+    newProgram.name = "Copy of "+ newProgram.name;
+    
     this.setState(state => ({
       programs: [
         ...state.programs,
-        state.addProgramOptions.find(p => p.id.toString(10) === eventId)
+        newProgram
+        //state.addProgramOptions.find(p => p.id.toString(10) === eventId)
       ],
-      addProgramOptions: state.addProgramOptions.filter(
-        p => p.id.toString(10) !== eventId
-      ),
+      // addProgramOptions: state.addProgramOptions.filter(
+      //   p => p.id.toString(10) !== eventId
+      // ),
       newlyAddedProgramIds: [...state.newlyAddedProgramIds, eventId]
     }));
+    //console.log(this.state.addProgramOptions);
+    
   };
 
   //2019-07-13 TODO: last updated time not changing after save
   handleSubmit = event => {
-    this.savePrograms();
+    this.savePrograms(); //udpate call to API for copying program in program tableq
     this.saveStudents();
     event.preventDefault();
+    
   };
 
   saveStudents() {
@@ -269,6 +275,7 @@ export class StudentInfoUpdate extends Component {
           />
 
           {this.renderPrograms()}
+          {/* {console.log(this.state.addProgramOptions)} */}
           <Select
             title={"Add existing Program"}
             name={"addProgram"}
