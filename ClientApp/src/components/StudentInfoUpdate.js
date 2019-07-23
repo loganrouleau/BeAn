@@ -81,9 +81,14 @@ export class StudentInfoUpdate extends Component {
       return (
         <ul>
           {this.state.programs.map(p => (
-            <li key={p.id}>
+            <div>
+              <li key={p.id}>
               <Program program={p} />
             </li>
+            <button onClick={(e)=> this.removeItem(p.id)} type="button" className="btn btn-default btn-sm">
+              Remove
+            </button>
+            </div>
           ))}
         </ul>
       );
@@ -92,9 +97,22 @@ export class StudentInfoUpdate extends Component {
     }
   }
 
+  removeItem(program2Remove){
+    const newPrograms = this.state.programs.filter(program => {//arrow function
+      return program.id !== program2Remove;
+    })
+    const newProgramsIds = this.state.newlyAddedProgramIds.filter(newlyAddedProgramId => {
+      return newlyAddedProgramId !== program2Remove;
+    })
+    this.setState({ 
+      programs: [...newPrograms],
+      newlyAddedProgramIds: [...newProgramsIds]//spread operator
+    })
+  }
+
   handleProgramSelectInput = event => {
-    let eventId = event.target.value;
-    let newProgram = Object.assign({},this.state.addProgramOptions.find(p => p.id.toString(10) === eventId));
+    let newProgramId = event.target.value;
+    let newProgram = Object.assign({},this.state.addProgramOptions.find(p => p.id.toString(10) === newProgramId));
     newProgram.name = "Copy of "+ newProgram.name;
     
     this.setState(state => ({
@@ -106,7 +124,7 @@ export class StudentInfoUpdate extends Component {
       // addProgramOptions: state.addProgramOptions.filter(
       //   p => p.id.toString(10) !== eventId
       // ),
-      newlyAddedProgramIds: [...state.newlyAddedProgramIds, eventId]
+      newlyAddedProgramIds: [...state.newlyAddedProgramIds, newProgramId]
     }));
     //console.log(this.state.addProgramOptions);
     
@@ -243,8 +261,7 @@ export class StudentInfoUpdate extends Component {
         >
           Go Back
         </button>
-        {/* <button className="btn btn-primary" onClick={handleTestClick}>test</button> */}
-
+        
         <form name="enterStudentInfo" onSubmit={this.handleSubmit}>
           {/* Student ID */}
           <Input
