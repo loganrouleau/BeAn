@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container } from "reactstrap";
 import Select from "./Select";
 
-export class ActiveSession extends Component {
+export class SessionDataCollection extends Component {
   state = {
     isSessionActive: false,
     addStudentOptions: [],

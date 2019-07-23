@@ -64,7 +64,7 @@ export class NavMenu extends Component {
                   </NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/active-session">
+                  <NavLink tag={Link} className="text-dark" to="/new-session">
                     Record Data
                   </NavLink>
                 </NavItem>

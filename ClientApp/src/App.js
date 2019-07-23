@@ -6,7 +6,8 @@ import { FetchData } from "./components/FetchData";
 import { StudentInfoUpdate } from "./components/StudentInfoUpdate";
 import { StudentInfo } from "./components/StudentInfo";
 import { MyStudents } from "./components/MyStudents";
-import { ActiveSession } from "./components/ActiveSession";
+import { NewSession } from "./components/NewSession";
+import { SessionDataCollection } from "./components/SessionDataCollection";
 import AuthorizeRoute from "./components/api-authorization/AuthorizeRoute";
 import ApiAuthorizationRoutes from "./components/api-authorization/ApiAuthorizationRoutes";
 import { ApplicationPaths } from "./components/api-authorization/ApiAuthorizationConstants";
@@ -26,7 +27,8 @@ export default class App extends Component {
         <Route path="/students/create" component={StudentInfoUpdate} />
         <Route exact path="/students/:id([-]?\d+)" component={StudentInfo} />
         <Route path="/students/:id([-]?\d+)/edit" component={StudentInfoUpdate} />
-        <Route path="/active-session" component={ActiveSession} />
+        <Route path="/new-session" component={NewSession} />
+        <Route path="/session-data-collection/:id([-]?\d+" component={SessionDataCollection} />
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
