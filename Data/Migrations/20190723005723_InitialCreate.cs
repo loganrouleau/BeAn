@@ -238,7 +238,7 @@ namespace BeAn.Data.Migrations
                     Description = table.Column<string>(nullable: true),
                     StartDateTime = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
                     EndDateTime = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
-                    StudentId = table.Column<int>(nullable: true)
+                    StudentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,7 +248,7 @@ namespace BeAn.Data.Migrations
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -263,7 +263,7 @@ namespace BeAn.Data.Migrations
                     MinTrial = table.Column<int>(nullable: false),
                     MaxTrial = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
-                    ProgramId = table.Column<int>(nullable: true)
+                    ProgramId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -273,7 +273,7 @@ namespace BeAn.Data.Migrations
                         column: x => x.ProgramId,
                         principalTable: "Programs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

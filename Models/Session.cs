@@ -14,7 +14,9 @@ namespace BeAn.Models
 
         public DateTime EndDateTime { get; set; }
 
-        [ForeignKey("StudentId")] // TODO: Annotation may not be necessary
+        public int StudentId { get; set; }
+
+        [ForeignKey("StudentId")]
         public virtual Student Student { get; set; }
 
         public virtual ICollection<SessionData> SessionData { get; set; }

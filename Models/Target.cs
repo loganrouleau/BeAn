@@ -24,6 +24,8 @@ namespace BeAn.Models
 
         public DateTime LastUpdated { get; set; }
 
+        public int ProgramId { get; set; }
+
         [ForeignKey("ProgramId")]
         public virtual Program Program { get; set; }
 

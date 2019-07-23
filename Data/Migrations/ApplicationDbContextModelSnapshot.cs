@@ -196,7 +196,7 @@ namespace BeAn.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("datetime('now')");
 
-                    b.Property<int?>("StudentId");
+                    b.Property<int>("StudentId");
 
                     b.HasKey("Id");
 
@@ -312,7 +312,7 @@ namespace BeAn.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("ProgramId");
+                    b.Property<int>("ProgramId");
 
                     b.Property<string>("PromptLevel");
 
@@ -537,7 +537,9 @@ namespace BeAn.Data.Migrations
                 {
                     b.HasOne("BeAn.Models.Student", "Student")
                         .WithMany("Sessions")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BeAn.Models.SessionData", b =>
@@ -559,7 +561,9 @@ namespace BeAn.Data.Migrations
                 {
                     b.HasOne("BeAn.Models.Program", "Program")
                         .WithMany("Targets")
-                        .HasForeignKey("ProgramId");
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
