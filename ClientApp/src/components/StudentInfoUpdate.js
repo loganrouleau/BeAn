@@ -85,7 +85,7 @@ export class StudentInfoUpdate extends Component {
               <li key={p.id}>
               <Program program={p} />
             </li>
-            <button onClick={(e)=> this.removeItem(p.id)} type="button" className="btn btn-default btn-sm">
+            <button onClick={(e)=> this.removeItem(p.id)} type="button" className="btn btn-default btn-secondary">
               Remove
             </button>
             </div>
