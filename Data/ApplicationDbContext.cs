@@ -56,12 +56,14 @@ namespace BeAn.Data
 
             PopulateTestData(modelBuilder);
         }
+
+        // TODO: Extract test data population into a separate class
         private void PopulateTestData(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Program>().HasData(
-                new { Id = -1, Name = "Program B", Description = "words", ProgramComplete = 0, MasteryCriteriaCompareType = 2, MasteryCriteriaCompareTo = 2.03, MasteryCriteriaConsecutiveSessions = 3, Reusable=true, StudentId = -1 },
-                new { Id = -2, Name = "Program C", Description = "morewords", ProgramComplete = 1, MasteryCriteriaCompareType = 2, MasteryCriteriaCompareTo = 2.33, MasteryCriteriaConsecutiveSessions = 4, Reusable=true, StudentId = -2 },
-                new { Id = -3, Name = "Program A", Description = "descwords", ProgramComplete = 0, MasteryCriteriaCompareType = 1, MasteryCriteriaCompareTo = 1.0, MasteryCriteriaConsecutiveSessions = 5, Reusable=true, StudentId = -1 }
+                new { Id = -1, Name = "Program B", Description = "words", ProgramComplete = 0, MasteryCriteriaCompareType = 2, MasteryCriteriaCompareTo = 2.03, MasteryCriteriaConsecutiveSessions = 3, Reusable = true, StudentId = -1 },
+                new { Id = -2, Name = "Program C", Description = "morewords", ProgramComplete = 1, MasteryCriteriaCompareType = 2, MasteryCriteriaCompareTo = 2.33, MasteryCriteriaConsecutiveSessions = 4, Reusable = true, StudentId = -2 },
+                new { Id = -3, Name = "Program A", Description = "descwords", ProgramComplete = 0, MasteryCriteriaCompareType = 1, MasteryCriteriaCompareTo = 1.0, MasteryCriteriaConsecutiveSessions = 5, Reusable = true, StudentId = -1 }
             );
 
             modelBuilder.Entity<Student>().HasData(
@@ -78,7 +80,7 @@ namespace BeAn.Data
                     Type = "targettype1",
                     MinTrial = 2,
                     MaxTrial = 4,
-                    ProgramId = -3
+                    ProgramId = -1
                 },
                 new
                 {
@@ -87,7 +89,43 @@ namespace BeAn.Data
                     Type = "targettype2",
                     MinTrial = 1,
                     MaxTrial = 5,
+                    ProgramId = -1
+                },
+                new
+                {
+                    Id = -3,
+                    Description = "targetName1",
+                    Type = "targettype1",
+                    MinTrial = 2,
+                    MaxTrial = 4,
                     ProgramId = -2
+                },
+                new
+                {
+                    Id = -4,
+                    Description = "targetName2",
+                    Type = "targettype2",
+                    MinTrial = 1,
+                    MaxTrial = 5,
+                    ProgramId = -2
+                },
+                new
+                {
+                    Id = -5,
+                    Description = "targetName1",
+                    Type = "targettype1",
+                    MinTrial = 2,
+                    MaxTrial = 4,
+                    ProgramId = -3
+                },
+                new
+                {
+                    Id = -6,
+                    Description = "targetName2",
+                    Type = "targettype2",
+                    MinTrial = 1,
+                    MaxTrial = 5,
+                    ProgramId = -3
                 }
             );
 

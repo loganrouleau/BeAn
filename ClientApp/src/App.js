@@ -28,7 +28,7 @@ export default class App extends Component {
         <Route exact path="/students/:id([-]?\d+)" component={StudentInfo} />
         <Route path="/students/:id([-]?\d+)/edit" component={StudentInfoUpdate} />
         <Route path="/new-session" component={NewSession} />
-        <Route path="/session-data-collection/:id([-]?\d+" component={SessionDataCollection} />
+        <Route path="/session-data-collection/:id([-]?\d+)" component={SessionDataCollection} />
         <Route
           path={ApplicationPaths.ApiAuthorizationPrefix}
           component={ApiAuthorizationRoutes}
