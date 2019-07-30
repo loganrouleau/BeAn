@@ -4,6 +4,9 @@ import Input from "./Input";
 import TextArea from "./TextArea";
 import Select from "./Select";
 import Program from "./Program";
+//import { confirmAlert } from 'react-confirm-alert'; // Import
+//import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 //import { browserHistory } from 'react-router';
 //import { createStackNavigator, createAppContainer } from "react-navigation";
@@ -292,7 +295,7 @@ export class StudentInfoUpdate extends Component {
           />
 
           {this.renderPrograms()}
-          {/* {console.log(this.state.addProgramOptions)} */}
+          
           <Select
             title={"Add existing Program"}
             name={"addProgram"}
