@@ -18,6 +18,7 @@ export class StudentInfoUpdate extends Component {
     redirectToStudentInfo: "",
     studentInfoRedirect: false,
     programs: [],
+    newlyAddedPrograms: [],
     addProgramOptions: [],
     newlyAddedProgramIds: [],
     student: {
@@ -44,16 +45,21 @@ export class StudentInfoUpdate extends Component {
   }
 
   async populateProgramData() {
+    console.log("populateProgramData");
     const response = await fetch(
       "api/student/programs/" + this.props.match.params.id
     );
     const data = await response.json();
     this.setState({
-      programs: data
+      programs: data,
     });
+    // this.setState({
+    //   existingPrograms: data
+    // });
   }
 
   async getAddProgramOptions() {
+    console.log("getAddProgramOptions");
     const response = await fetch("api/program");
     let data = await response.json();
     // data = data.filter(program => {
@@ -78,37 +84,71 @@ export class StudentInfoUpdate extends Component {
     }));
   };
 
-  //display programs associated with the student
+  //update this to only display remove buttons for newlyAddedProgramIds
   renderPrograms() {
     if (this.state.programs.length > 0) {
       return (
+        <div>
         <ul>
           {this.state.programs.map(p => (
-            <div>
-              <li key={p.id}>
-              <Program program={p} />
+            <li key={p.id}>
+            <Program program={p} />
             </li>
-            <button onClick={(e)=> this.removeItem(p.id)} type="button" className="btn btn-default btn-secondary">
-              Remove
-            </button>
-            </div>
           ))}
         </ul>
+        </div>
+    //else if(newlyAddedProgramIds.Contains(p.id)==true){
+            // return
+            // <div>
+            //   <button onClick={(e)=> this.removeItem(p.id)} type="button" className="btn btn-default btn-secondary">
+            //   Remove
+            //   </button>
+            // </div>
+            // }
+    
       );
     } else {
       return <p>No programs for this student</p>;
     }
+    
   }
-
+  renderNewlyAddedPrograms() {
+    console.log("renderNewlyAddedPrograms");
+    //if (this.state.newlyAddedPrograms.length > 0) {
+      return (
+        <div>
+        <ul>
+          {this.state.newlyAddedPrograms.map(p => (
+            <li key={p.id}>
+            <Program program={p} />
+            {/* {console.log("p.id is"+p.id)}
+            {console.log("NAP IDs are"+this.state.newlyAddedProgramIds)}
+            {console.log("comparison "+this.state.newlyAddedProgramIds.includes(p.id))} */}
+            <button onClick={(e)=> this.removeItem(p.id)} type="button" className="btn btn-default btn-secondary">
+              Remove
+            </button>
+            </li>
+          ))}
+        </ul>
+        </div>
+      );
+  }
+  //update this because only newlyAddedProgramIds would show program ID 
   removeItem(program2Remove){
-    const newPrograms = this.state.programs.filter(program => {//arrow function
+    // const newPrograms = this.state.programs.filter(program => {
+    //   return program.id !== program2Remove;
+    // })
+    console.log("program2Remove "+program2Remove);
+    const newPrograms = this.state.newlyAddedPrograms.filter(program => {
       return program.id !== program2Remove;
     })
+    
     const newProgramsIds = this.state.newlyAddedProgramIds.filter(newlyAddedProgramId => {
       return newlyAddedProgramId !== program2Remove;
     })
     this.setState({ 
-      programs: [...newPrograms],
+      //programs: [...newPrograms],
+      newlyAddedPrograms: [...newPrograms],
       newlyAddedProgramIds: [...newProgramsIds]//spread operator
     })
   }
@@ -116,26 +156,38 @@ export class StudentInfoUpdate extends Component {
   handleProgramSelectInput = event => {
     let newProgramId = event.target.value;
     let newProgram = Object.assign({},this.state.addProgramOptions.find(p => p.id.toString(10) === newProgramId));
-    newProgram.name = "Copy of "+ newProgram.name;
     
+    newProgram.name = "Copy of "+ newProgram.name;
+    console.log("newProgram.name "+newProgram.name);
+
+    newProgram.id=1+this.state.newlyAddedPrograms.length;
+    console.log("newProgram.id "+newProgram.id); //why is this undefined?
     this.setState(state => ({
-      programs: [
-        ...state.programs,
+      // programs: [
+      //   ...state.programs,
+      //   newProgram
+      //   //state.addProgramOptions.find(p => p.id.toString(10) === eventId)
+      // ],
+      newlyAddedPrograms: [
+        ...state.newlyAddedPrograms,
         newProgram
-        //state.addProgramOptions.find(p => p.id.toString(10) === eventId)
       ],
+      
       // addProgramOptions: state.addProgramOptions.filter(
       //   p => p.id.toString(10) !== eventId
       // ),
       newlyAddedProgramIds: [...state.newlyAddedProgramIds, newProgramId]
     }));
-    //console.log(this.state.addProgramOptions);
+    console.log("this.state.addProgramOptions");
+    console.log(this.state.addProgramOptions);
+    console.log("newlyAddedPrograms.id ");
+    console.log(this.state.newlyAddedPrograms.id);
     
   };
 
   //2019-07-13 TODO: last updated time not changing after save
   handleSubmit = event => {
-    this.savePrograms(); //udpate call to API for copying program in program tableq
+    this.savePrograms();
     this.saveStudents();
     event.preventDefault();
     
@@ -188,8 +240,9 @@ export class StudentInfoUpdate extends Component {
         .catch(err => console.error(err));
     }
   }
-
+  //update saveProgram only send newlyAddedProgramIds to API
   savePrograms() {
+    console.log("")
     let promises = [];
     this.getProgramsToSave().then(programsToSave => {
       var i;
@@ -295,6 +348,7 @@ export class StudentInfoUpdate extends Component {
           />
 
           {this.renderPrograms()}
+          {this.renderNewlyAddedPrograms()}
           
           <Select
             title={"Add existing Program"}
