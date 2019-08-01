@@ -112,6 +112,7 @@ export class StudentInfoUpdate extends Component {
     }
     
   }
+
   renderNewlyAddedPrograms() {
     console.log("renderNewlyAddedPrograms");
     //if (this.state.newlyAddedPrograms.length > 0) {
@@ -161,7 +162,7 @@ export class StudentInfoUpdate extends Component {
     console.log("newProgram.name "+newProgram.name);
 
     newProgram.id=1+this.state.newlyAddedPrograms.length;
-    console.log("newProgram.id "+newProgram.id); //why is this undefined?
+    console.log("newProgram.id "+newProgram.id);
     this.setState(state => ({
       // programs: [
       //   ...state.programs,
@@ -182,7 +183,8 @@ export class StudentInfoUpdate extends Component {
     console.log(this.state.addProgramOptions);
     console.log("newlyAddedPrograms.id ");
     console.log(this.state.newlyAddedPrograms.id);
-    
+    console.log("this.state.newlyAddedProgramsIds ");
+    console.log(this.state.newlyAddedProgramsIds);
   };
 
   //2019-07-13 TODO: last updated time not changing after save
@@ -190,7 +192,6 @@ export class StudentInfoUpdate extends Component {
     this.savePrograms();
     this.saveStudents();
     event.preventDefault();
-    
   };
 
   saveStudents() {
@@ -242,7 +243,7 @@ export class StudentInfoUpdate extends Component {
   }
   //update saveProgram only send newlyAddedProgramIds to API
   savePrograms() {
-    console.log("")
+    console.log("savePrograms")
     let promises = [];
     this.getProgramsToSave().then(programsToSave => {
       var i;
@@ -268,6 +269,7 @@ export class StudentInfoUpdate extends Component {
   }
 
   getProgramsToSave() {
+    console.log("getProgramsToSave");
     let promises = [];
     this.state.newlyAddedProgramIds.forEach(program => {
       promises.push(
@@ -276,6 +278,8 @@ export class StudentInfoUpdate extends Component {
           .catch(err => console.error(err))
       );
     });
+    console.log("this.state.newlyAddedProgramIds ");
+    console.log(this.state.newlyAddedProgramIds);
     return Promise.all(promises);
   }
 
@@ -317,7 +321,6 @@ export class StudentInfoUpdate extends Component {
         >
           Go Back
         </button>
-        
         <form name="enterStudentInfo" onSubmit={this.handleSubmit}>
           {/* Student ID */}
           <Input
@@ -359,7 +362,7 @@ export class StudentInfoUpdate extends Component {
             placeholder={"Select Program"}
             labelField={"name"}
           />
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Submit" className="btn btn-primary"/>
         </form>
       </div>
     );

@@ -63,7 +63,7 @@ export class StudentInfo extends Component {
     });
     this.setState({ addProgramOptions: data });
   }
-
+  //TODO: update button onClicks
   renderPrograms() {
     if (this.state.programs.length > 0) {
       return (
@@ -71,6 +71,22 @@ export class StudentInfo extends Component {
           {this.state.programs.map(p => (
             <li key={p.id}>
               <Program program={p} />
+              <button 
+                //onClick={(e)=> this.removeItem(p.id)} 
+                type="button" 
+                className="btn btn-default btn-secondary" 
+                style={{marginRight:10}}
+              >
+                Edit
+              </button>
+              <button 
+                //onClick={(e)=> this.removeItem(p.id)} 
+                type="button" 
+                className="btn btn-default btn-secondary"
+                style={{marginRight:10}}
+              >
+                Remove
+              </button>
             </li>
           ))}
         </ul>
@@ -141,15 +157,16 @@ export class StudentInfo extends Component {
           <button
             className="btn btn-primary"
             onClick={this.handleMyStudentsRedirect}
+            style={{marginRight:10}}
           >
             Back to My Students
           </button>
-
           <button
             className="btn btn-primary"
             onClick={this.handleEditStudentRedirect}
+            style={{marginRight:10}}
           >
-            Edit Student
+            Edit Student or Add Program
           </button>
 
           <Row>
