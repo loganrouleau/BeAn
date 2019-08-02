@@ -21,7 +21,10 @@ export class StudentInfoUpdate extends Component {
     programs: [],
     newlyAddedPrograms: [],
     addProgramOptions: [],
-    newlyAddedProgramIds: [],
+    newlyAddedProgramIds: {
+      frontendId:[],
+      backendId: []
+    },
     student: {
       studentId: "",
       studentInitials: "",
@@ -137,32 +140,46 @@ export class StudentInfoUpdate extends Component {
   }
   //update this because only newlyAddedProgramIds would show program ID 
   removeItem(program2Remove){
-    // const newPrograms = this.state.programs.filter(program => {
-    //   return program.id !== program2Remove;
-    // })
     console.log("program2Remove "+program2Remove);
+    //front
     const newPrograms = this.state.newlyAddedPrograms.filter(program => {
       return program.id !== program2Remove;
-    })
-    
-    const newProgramsIds = this.state.newlyAddedProgramIds.filter(newlyAddedProgramId => {
-      return newlyAddedProgramId !== program2Remove;
-    })
-    this.setState({ 
+    });
+    //backend
+    //take out of want to keep
+    //take out the want to remove
+    //remove only one
+    //put them together
+    const keepProgramsIds = this.state.newlyAddedProgramIds.filter(newlyAddedProgramId => {
+      return newlyAddedProgramId.frontendId !== program2Remove;
+    });
+    const removeProgramsIds = this.state.newlyAddedProgramIds.filter(newlyAddedProgramId => {
+      return newlyAddedProgramId.frontendId == program2Remove;
+    });
+    removeProgramsIds.shift();
+    const newProgramsIds = keepProgramsIds.concat(removeProgramsIds);
+
+    this.setState( state => ({ 
       //programs: [...newPrograms],
       newlyAddedPrograms: [...newPrograms],
-      newlyAddedProgramIds: [...newProgramsIds]//spread operator
-    })
+      newlyAddedProgramIds: [...newProgramsIds]
+    }),() => {
+      console.log("newlyAddedPrograms");
+      console.log(this.state.newlyAddedPrograms);
+      console.log("this.state.newlyAddedProgramIds frontendId backendId");
+      console.log(this.state.newlyAddedProgramIds.frontendId+" "+this.state.newlyAddedProgramIds.backendId);
+      
+    });
   }
 
   handleProgramSelectInput = event => {
-    let newProgramId = event.target.value;
+    let newProgramId = event.target.value; //backendId
     let newProgram = Object.assign({},this.state.addProgramOptions.find(p => p.id.toString(10) === newProgramId));
     
     newProgram.name = "Copy of "+ newProgram.name;
     console.log("newProgram.name "+newProgram.name);
 
-    newProgram.id=1+this.state.newProgramCount;
+    newProgram.id=1+this.state.newProgramCount; //frontendId
     console.log("newProgram.id "+newProgram.id);
     this.setState(state => ({
       // programs: [
@@ -179,15 +196,16 @@ export class StudentInfoUpdate extends Component {
       // addProgramOptions: state.addProgramOptions.filter(
       //   p => p.id.toString(10) !== eventId
       // ),
-      newlyAddedProgramIds: [...state.newlyAddedProgramIds, newProgramId]
+      newlyAddedProgramIds: {...state.newlyAddedProgramIds, frontendId:newProgram.id ,backendId: newProgramId }
 
     }),() => {
       console.log("this.state.addProgramOptions");
       console.log(this.state.addProgramOptions);
       console.log("newlyAddedPrograms");
       console.log(this.state.newlyAddedPrograms);
-      console.log("this.state.newlyAddedProgramIds ");
-      console.log(this.state.newlyAddedProgramIds);
+      console.log("this.state.newlyAddedProgramIds frontendId backendId");
+      console.log(this.state.newlyAddedProgramIds.frontendId+" "+this.state.newlyAddedProgramIds.backendId);
+      
     }
     );
     
@@ -247,35 +265,23 @@ export class StudentInfoUpdate extends Component {
         .catch(err => console.error(err));
     }
   }
-  //update saveProgram only send newlyAddedProgramIds to API
-  savePrograms() {
+  
+  savePrograms() { //Post newlyAddedProgramIds to backend
     console.log("savePrograms")
-    //let promises = [];
-    //use this.state.newlyAddedProgramIds 
     const programsToSave = this.state.newlyAddedProgramIds;
-    //this.getProgramsToSave().then(programsToSave => {
-      var i;
-      //for (i = 0; i < programsToSave.length; i++) {
-        //promises.push(
-          fetch("https://localhost:5001/api/program/saveNewlyAddedPrograms/", {
-            method: "POST",
-            body: JSON.stringify({
-              studentId: this.props.match.params.id,
-              ...programsToSave
-            }),
-            cache: "no-cache",
-            headers: {
-              "content-type": "application/json"
-            }
-          }).then(() => {
-            this.setState({ programSaveComplete: true });
-          });
-        //);
-      //}
-      // Promise.all(promises).then(() => {
-      //   this.setState({ programSaveComplete: true });
-      // });
-    
+    fetch("https://localhost:5001/api/program/saveNewlyAddedPrograms/", {
+      method: "POST",
+      body: JSON.stringify({
+        studentId: this.props.match.params.id,
+        ...programsToSave
+      }),
+      cache: "no-cache",
+      headers: {
+        "content-type": "application/json"
+      }
+    }).then(() => {
+      this.setState({ programSaveComplete: true });
+    });
   }
 
   getProgramsToSave() {

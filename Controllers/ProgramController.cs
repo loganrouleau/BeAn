@@ -39,7 +39,7 @@ namespace BeAn.Controllers
         //This API takes an array of int; first int is student id, rests are programIDs;
         //This API copies the programs in the program table with programIDs and update the copies' studentID field.
         [HttpPost("saveNewlyAddedPrograms")]
-        public IActionResult saveNewlyAddedPrograms([FromBody] ICollection<int> programsToCreateCopy )
+        public IActionResult SaveNewlyAddedPrograms([FromBody] ICollection<int> programsToCreateCopy )
         {   //destring to get student ID
             //destring to get list of program IDs
             //select insert program table to make copies
