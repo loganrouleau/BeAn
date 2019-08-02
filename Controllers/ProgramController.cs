@@ -36,6 +36,27 @@ namespace BeAn.Controllers
             return Ok();
         }
 
+        //This API takes an array of int; first int is student id, rests are programIDs;
+        //This API copies the programs in the program table with programIDs and update the copies' studentID field.
+        [HttpPost("saveNewlyAddedPrograms")]
+        public IActionResult saveNewlyAddedPrograms([FromBody] ICollection<int> programsToCreateCopy )
+        {   //destring to get student ID
+            //destring to get list of program IDs
+            //select insert program table to make copies
+            //update student ID fields of those copies
+
+            int studentId = programsToCreateCopy.First();
+            for (int i=1; i<programsToCreateCopy.Count; i++){
+                Program programToCopy=_context.Programs.Where(p => p.Id.Equals(programsToCreateCopy.ElementAt(i))).First();
+                programToCopy.StudentId=studentId;
+                _context.Programs.Add(programToCopy);
+
+            }
+            _context.SaveChanges();
+            return Ok();
+        }
+
+
         [HttpPost("create")]
         public IActionResult CreateProgram([FromBody] Models.Program program)
         {

@@ -14,6 +14,7 @@ import Program from "./Program";
 // ref: https://www.codementor.io/blizzerand/building-forms-using-react-everything-you-need-to-know-iz3eyoq4y
 export class StudentInfoUpdate extends Component {
   state = {
+    newProgramCount: 0,
     programSaveComplete: false,
     redirectToStudentInfo: "",
     studentInfoRedirect: false,
@@ -161,7 +162,7 @@ export class StudentInfoUpdate extends Component {
     newProgram.name = "Copy of "+ newProgram.name;
     console.log("newProgram.name "+newProgram.name);
 
-    newProgram.id=1+this.state.newlyAddedPrograms.length;
+    newProgram.id=1+this.state.newProgramCount;
     console.log("newProgram.id "+newProgram.id);
     this.setState(state => ({
       // programs: [
@@ -169,6 +170,7 @@ export class StudentInfoUpdate extends Component {
       //   newProgram
       //   //state.addProgramOptions.find(p => p.id.toString(10) === eventId)
       // ],
+      newProgramCount: state.newProgramCount+1,
       newlyAddedPrograms: [
         ...state.newlyAddedPrograms,
         newProgram
@@ -178,13 +180,17 @@ export class StudentInfoUpdate extends Component {
       //   p => p.id.toString(10) !== eventId
       // ),
       newlyAddedProgramIds: [...state.newlyAddedProgramIds, newProgramId]
-    }));
-    console.log("this.state.addProgramOptions");
-    console.log(this.state.addProgramOptions);
-    console.log("newlyAddedPrograms.id ");
-    console.log(this.state.newlyAddedPrograms.id);
-    console.log("this.state.newlyAddedProgramsIds ");
-    console.log(this.state.newlyAddedProgramsIds);
+
+    }),() => {
+      console.log("this.state.addProgramOptions");
+      console.log(this.state.addProgramOptions);
+      console.log("newlyAddedPrograms");
+      console.log(this.state.newlyAddedPrograms);
+      console.log("this.state.newlyAddedProgramIds ");
+      console.log(this.state.newlyAddedProgramIds);
+    }
+    );
+    
   };
 
   //2019-07-13 TODO: last updated time not changing after save
@@ -244,28 +250,32 @@ export class StudentInfoUpdate extends Component {
   //update saveProgram only send newlyAddedProgramIds to API
   savePrograms() {
     console.log("savePrograms")
-    let promises = [];
-    this.getProgramsToSave().then(programsToSave => {
+    //let promises = [];
+    //use this.state.newlyAddedProgramIds 
+    const programsToSave = this.state.newlyAddedProgramIds;
+    //this.getProgramsToSave().then(programsToSave => {
       var i;
-      for (i = 0; i < programsToSave.length; i++) {
-        promises.push(
-          fetch("https://localhost:5001/api/program/" + programsToSave[i].id, {
+      //for (i = 0; i < programsToSave.length; i++) {
+        //promises.push(
+          fetch("https://localhost:5001/api/program/saveNewlyAddedPrograms/", {
             method: "POST",
             body: JSON.stringify({
-              ...programsToSave[i],
-              studentId: this.props.match.params.id
+              studentId: this.props.match.params.id,
+              ...programsToSave
             }),
             cache: "no-cache",
             headers: {
               "content-type": "application/json"
             }
-          })
-        );
-      }
-      Promise.all(promises).then(() => {
-        this.setState({ programSaveComplete: true });
-      });
-    });
+          }).then(() => {
+            this.setState({ programSaveComplete: true });
+          });
+        //);
+      //}
+      // Promise.all(promises).then(() => {
+      //   this.setState({ programSaveComplete: true });
+      // });
+    
   }
 
   getProgramsToSave() {
