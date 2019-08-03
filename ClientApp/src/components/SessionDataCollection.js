@@ -53,7 +53,7 @@ export class SessionDataCollection extends Component {
         <h1>Start recording your data!</h1>
         <p>{"Session description: " + this.state.description}</p>
         {this.renderCurrentProgram()}
-        {this.renderPrompts()}
+        {this.renderTargets()}
         {this.renderStopSessionButton()}
       </Container>
     );
@@ -68,18 +68,28 @@ export class SessionDataCollection extends Component {
     );
   }
 
-  renderPrompts() {
+  renderTargets() {
     if (this.state.targets.length > 0) {
-      return this.state.targets.forEach(target => {
-        if (target.prompts !== null && target.prompts.length > 0) {
-          target.prompts.forEach(prompt => this.renderPrompt(prompt));
-        }
-      });
+      return (
+        <div>
+          {this.state.targets.map(target => this.renderPrompts(target))}
+        </div>
+      );
     }
+    return <p>No targets found for this program.</p>;
   }
 
-  renderPrompt(prompt) {
-    return <Trial />;
+  renderPrompts(target) {
+    if (target.prompts && target.prompts.length > 0) {
+      return (
+        <div>
+          {target.prompts.map(prompt => (
+            <Trial prompt={prompt} key={prompt.id} />
+          ))}
+        </div>
+      );
+    }
+    return <p>No prompts found for this target.</p>;
   }
 
   renderStopSessionButton() {
