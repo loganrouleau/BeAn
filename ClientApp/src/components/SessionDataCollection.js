@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container } from "reactstrap";
-import Trial from "./Trial";
+import { Trial } from "./Trial";
 
 export class SessionDataCollection extends Component {
   state = {
@@ -83,14 +83,23 @@ export class SessionDataCollection extends Component {
     if (target.prompts && target.prompts.length > 0) {
       return (
         <div>
+          <h1>{"Target name: " + target.name}</h1>
           {target.prompts.map(prompt => (
-            <Trial prompt={prompt} key={prompt.id} />
+            <Trial
+              prompt={prompt}
+              handleTrialComplete={this.handleTrialComplete}
+              key={prompt.id}
+            />
           ))}
         </div>
       );
     }
     return <p>No prompts found for this target.</p>;
   }
+
+  handleTrialComplete = trialData => {
+    console.log("Trial complete callback entered");
+  };
 
   renderStopSessionButton() {
     return (
