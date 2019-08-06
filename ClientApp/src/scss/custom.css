@@ -1,0 +1,12 @@
+.trial {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.trial-success {
+  background: green;
+}
+
+.trial-failure {
+  background: red;
+}

@@ -87,6 +87,8 @@ export class SessionDataCollection extends Component {
           {target.prompts.map(prompt => (
             <Trial
               prompt={prompt}
+              target={target}
+              program={this.state.program}
               handleTrialComplete={this.handleTrialComplete}
               key={prompt.id}
             />
