@@ -141,6 +141,10 @@ export class StudentInfoUpdate extends Component {
   //update this because only newlyAddedProgramIds would show program ID 
   removeItem(program2Remove){
     console.log("program2Remove "+program2Remove);
+
+    //let index = this.state.newlyAddedProgramIds.frontendId.findIndex(value => (value === program2Remove));
+    //console.log(index);
+
     //front
     const newPrograms = this.state.newlyAddedPrograms.filter(program => {
       return program.id !== program2Remove;
@@ -159,10 +163,14 @@ export class StudentInfoUpdate extends Component {
     removeProgramsIds.shift();
     const newProgramsIds = keepProgramsIds.concat(removeProgramsIds);
 
+
+    // let newFrontEndIds = this.state.newlyAddedProgramIds.frontEndId.splice(...)
+    // let backEndIds = this.state.newlyAddedProgramIds.backEndId.splice(...)
     this.setState( state => ({ 
       //programs: [...newPrograms],
       newlyAddedPrograms: [...newPrograms],
-      newlyAddedProgramIds: [...newProgramsIds]
+      newlyAddedProgramIds.frontendId: [newFrontEndIds], // use splice() to remove the element at the index calculated above
+      newlyAddedProgramIds.backendId: [newFrontEndIds] 
     }),() => {
       console.log("newlyAddedPrograms");
       console.log(this.state.newlyAddedPrograms);
