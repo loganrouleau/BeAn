@@ -138,39 +138,37 @@ export class StudentInfoUpdate extends Component {
         </div>
       );
   }
-  //update this because only newlyAddedProgramIds would show program ID 
-  removeItem(program2Remove){
-    console.log("program2Remove "+program2Remove);
-
-    //let index = this.state.newlyAddedProgramIds.frontendId.findIndex(value => (value === program2Remove));
-    //console.log(index);
-
-    //front
+  removeItem(program2Remove){ //program2Remove is the frontendID
+    //this function updates newPrograms used by frontend to show the program wanted to be added
+    //this function also updates the newlyAddedProgramIds - frontendId & backendId
+    //the backendId are sent to API to make copies of and associate this student to
+    
+    //console.log("program2Remove "+program2Remove); 
     const newPrograms = this.state.newlyAddedPrograms.filter(program => {
       return program.id !== program2Remove;
     });
-    //backend
-    //take out of want to keep
-    //take out the want to remove
-    //remove only one
-    //put them together
-    const keepProgramsIds = this.state.newlyAddedProgramIds.filter(newlyAddedProgramId => {
-      return newlyAddedProgramId.frontendId !== program2Remove;
-    });
-    const removeProgramsIds = this.state.newlyAddedProgramIds.filter(newlyAddedProgramId => {
-      return newlyAddedProgramId.frontendId == program2Remove;
-    });
-    removeProgramsIds.shift();
-    const newProgramsIds = keepProgramsIds.concat(removeProgramsIds);
+    
+    const removeProgramIndex = this.state.newlyAddedProgramIds.frontendId.indexOf(program2Remove);
+    //console.log("removeProgramIndex ");
+    //console.log(removeProgramIndex);
 
+    // console.log("[before] keepProgramsFrontendIds ");
+    // console.log(this.state.newlyAddedProgramIds.frontendId);
+    this.state.newlyAddedProgramIds.frontendId.splice(removeProgramIndex,1);
+    const keepProgramsFrontendIds = this.state.newlyAddedProgramIds.frontendId;
+    // console.log("[after] keepProgramsFrontendIds ");
+    // console.log(keepProgramsFrontendIds);
 
-    // let newFrontEndIds = this.state.newlyAddedProgramIds.frontEndId.splice(...)
-    // let backEndIds = this.state.newlyAddedProgramIds.backEndId.splice(...)
+    // console.log("[before] keepProgramsBackendIds ");
+    // console.log(this.state.newlyAddedProgramIds.backendId);
+    this.state.newlyAddedProgramIds.backendId.splice(removeProgramIndex,1);
+    const keepProgramsBackendIds = this.state.newlyAddedProgramIds.backendId;
+    // console.log("[after] keepProgramsBackendIds ");
+    // console.log(keepProgramsBackendIds);
+
     this.setState( state => ({ 
-      //programs: [...newPrograms],
       newlyAddedPrograms: [...newPrograms],
-      newlyAddedProgramIds.frontendId: [newFrontEndIds], // use splice() to remove the element at the index calculated above
-      newlyAddedProgramIds.backendId: [newFrontEndIds] 
+      newlyAddedProgramIds: {frontendId: keepProgramsFrontendIds ,backendId: keepProgramsBackendIds}
     }),() => {
       console.log("newlyAddedPrograms");
       console.log(this.state.newlyAddedPrograms);
@@ -204,7 +202,11 @@ export class StudentInfoUpdate extends Component {
       // addProgramOptions: state.addProgramOptions.filter(
       //   p => p.id.toString(10) !== eventId
       // ),
-      newlyAddedProgramIds: {...state.newlyAddedProgramIds, frontendId:newProgram.id ,backendId: newProgramId }
+      //newlyAddedProgramIds: {[...state.newlyAddedProgramIds, frontendId:newProgram.id] ,backendId: newProgramId }
+      newlyAddedProgramIds: {
+        frontendId: [...state.newlyAddedProgramIds.frontendId, newProgram.id],
+        backendId:  [...state.newlyAddedProgramIds.backendId, newProgramId]
+      }
 
     }),() => {
       console.log("this.state.addProgramOptions");
