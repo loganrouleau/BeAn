@@ -100,11 +100,11 @@ namespace BeAn.Data.Migrations
                         new
                         {
                             Id = -1,
-                            Description = "words",
-                            MasteryCriteriaCompareTo = 2.0299999999999998,
-                            MasteryCriteriaCompareType = 2,
-                            MasteryCriteriaConsecutiveSessions = 3,
-                            Name = "Program B",
+                            Description = "Dealing with school situations",
+                            MasteryCriteriaCompareTo = 80.0,
+                            MasteryCriteriaCompareType = 1,
+                            MasteryCriteriaConsecutiveSessions = 1,
+                            Name = "School",
                             ProgramComplete = 0,
                             Reusable = true,
                             StudentId = -1
@@ -112,23 +112,23 @@ namespace BeAn.Data.Migrations
                         new
                         {
                             Id = -2,
-                            Description = "morewords",
-                            MasteryCriteriaCompareTo = 2.3300000000000001,
-                            MasteryCriteriaCompareType = 2,
-                            MasteryCriteriaConsecutiveSessions = 4,
-                            Name = "Program C",
+                            Description = "Dealing with home situations",
+                            MasteryCriteriaCompareTo = 80.0,
+                            MasteryCriteriaCompareType = 1,
+                            MasteryCriteriaConsecutiveSessions = 2,
+                            Name = "Home",
                             ProgramComplete = 1,
                             Reusable = true,
-                            StudentId = -2
+                            StudentId = -1
                         },
                         new
                         {
                             Id = -3,
-                            Description = "descwords",
-                            MasteryCriteriaCompareTo = 1.0,
+                            Description = "Being away from home",
+                            MasteryCriteriaCompareTo = 80.0,
                             MasteryCriteriaCompareType = 1,
-                            MasteryCriteriaConsecutiveSessions = 5,
-                            Name = "Program A",
+                            MasteryCriteriaConsecutiveSessions = 3,
+                            Name = "Outing",
                             ProgramComplete = 0,
                             Reusable = true,
                             StudentId = -1
@@ -165,19 +165,199 @@ namespace BeAn.Data.Migrations
                         {
                             Id = -1,
                             ConsecutiveSuccessfulSession = 0,
-                            Description = "prompt1",
-                            Level = 5,
-                            PromptLevelComplete = 4,
-                            TargetId = -2
+                            Description = "Full physical guidance",
+                            Level = 1,
+                            PromptLevelComplete = 0,
+                            TargetId = -1
                         },
                         new
                         {
                             Id = -2,
+                            ConsecutiveSuccessfulSession = 0,
+                            Description = "Demonstration of me washing hands",
+                            Level = 2,
+                            PromptLevelComplete = 0,
+                            TargetId = -1
+                        },
+                        new
+                        {
+                            Id = -3,
+                            ConsecutiveSuccessfulSession = 0,
+                            Description = "No assistance required",
+                            Level = 3,
+                            PromptLevelComplete = 0,
+                            TargetId = -1
+                        },
+                        new
+                        {
+                            Id = -4,
                             ConsecutiveSuccessfulSession = 1,
-                            Description = "prompt2",
-                            Level = 4,
-                            PromptLevelComplete = 4,
+                            Description = "Requires introduction and prompting",
+                            Level = 1,
+                            PromptLevelComplete = 1,
                             TargetId = -2
+                        },
+                        new
+                        {
+                            Id = -5,
+                            ConsecutiveSuccessfulSession = 0,
+                            Description = "Needs a reminder",
+                            Level = 2,
+                            PromptLevelComplete = 0,
+                            TargetId = -2
+                        },
+                        new
+                        {
+                            Id = -6,
+                            ConsecutiveSuccessfulSession = 0,
+                            Description = "Will initiate interaction on their own",
+                            Level = 3,
+                            PromptLevelComplete = 0,
+                            TargetId = -2
+                        },
+                        new
+                        {
+                            Id = -7,
+                            ConsecutiveSuccessfulSession = 1,
+                            Description = "Won't go to class unless physically guided",
+                            Level = 1,
+                            PromptLevelComplete = 1,
+                            TargetId = -3
+                        },
+                        new
+                        {
+                            Id = -8,
+                            ConsecutiveSuccessfulSession = 1,
+                            Description = "Must remind to attend class",
+                            Level = 2,
+                            PromptLevelComplete = 1,
+                            TargetId = -3
+                        },
+                        new
+                        {
+                            Id = -9,
+                            ConsecutiveSuccessfulSession = 0,
+                            Description = "Usually remembers to attend class",
+                            Level = 3,
+                            PromptLevelComplete = 0,
+                            TargetId = -3
+                        },
+                        new
+                        {
+                            Id = -10,
+                            ConsecutiveSuccessfulSession = 2,
+                            Description = "Needs physical guidance with cutlery",
+                            Level = 1,
+                            PromptLevelComplete = 1,
+                            TargetId = -4
+                        },
+                        new
+                        {
+                            Id = -11,
+                            ConsecutiveSuccessfulSession = 2,
+                            Description = "Makes small mistakes and spills food",
+                            Level = 2,
+                            PromptLevelComplete = 1,
+                            TargetId = -4
+                        },
+                        new
+                        {
+                            Id = -12,
+                            ConsecutiveSuccessfulSession = 2,
+                            Description = "Flawless eater",
+                            Level = 3,
+                            PromptLevelComplete = 1,
+                            TargetId = -4
+                        },
+                        new
+                        {
+                            Id = -13,
+                            ConsecutiveSuccessfulSession = 2,
+                            Description = "Needs physical guidance",
+                            Level = 1,
+                            PromptLevelComplete = 1,
+                            TargetId = -5
+                        },
+                        new
+                        {
+                            Id = -14,
+                            ConsecutiveSuccessfulSession = 2,
+                            Description = "Misses a few spots",
+                            Level = 2,
+                            PromptLevelComplete = 1,
+                            TargetId = -5
+                        },
+                        new
+                        {
+                            Id = -15,
+                            ConsecutiveSuccessfulSession = 2,
+                            Description = "Complains and must be dragged to bed",
+                            Level = 1,
+                            PromptLevelComplete = 1,
+                            TargetId = -6
+                        },
+                        new
+                        {
+                            Id = -16,
+                            ConsecutiveSuccessfulSession = 2,
+                            Description = "Goes to bed on their own",
+                            Level = 2,
+                            PromptLevelComplete = 1,
+                            TargetId = -6
+                        },
+                        new
+                        {
+                            Id = -17,
+                            ConsecutiveSuccessfulSession = 1,
+                            Description = "Doesn't know how to get on the bus",
+                            Level = 1,
+                            PromptLevelComplete = 0,
+                            TargetId = -7
+                        },
+                        new
+                        {
+                            Id = -18,
+                            ConsecutiveSuccessfulSession = 2,
+                            Description = "Can ride the bus with guidance",
+                            Level = 2,
+                            PromptLevelComplete = 0,
+                            TargetId = -7
+                        },
+                        new
+                        {
+                            Id = -19,
+                            ConsecutiveSuccessfulSession = 3,
+                            Description = "Doesn't know what to buy",
+                            Level = 1,
+                            PromptLevelComplete = 1,
+                            TargetId = -8
+                        },
+                        new
+                        {
+                            Id = -20,
+                            ConsecutiveSuccessfulSession = 1,
+                            Description = "Is able to follow shopping list and checkout",
+                            Level = 2,
+                            PromptLevelComplete = 0,
+                            TargetId = -8
+                        },
+                        new
+                        {
+                            Id = -21,
+                            ConsecutiveSuccessfulSession = 3,
+                            Description = "Needs assistance",
+                            Level = 1,
+                            PromptLevelComplete = 1,
+                            TargetId = -9
+                        },
+                        new
+                        {
+                            Id = -22,
+                            ConsecutiveSuccessfulSession = 0,
+                            Description = "Can use Google Maps to find an address",
+                            Level = 2,
+                            PromptLevelComplete = 0,
+                            TargetId = -9
                         });
                 });
 
@@ -275,25 +455,25 @@ namespace BeAn.Data.Migrations
                         {
                             Id = -1,
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Remark = "Hi",
+                            Remark = "This student is very smart",
                             StudentId = "id1",
-                            StudentInitials = "A.A"
+                            StudentInitials = "Apple A."
                         },
                         new
                         {
                             Id = -2,
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Remark = "Hello",
+                            Remark = "Temporary student until I go on vacation",
                             StudentId = "id2",
-                            StudentInitials = "B.B"
+                            StudentInitials = "Banana B."
                         },
                         new
                         {
                             Id = -3,
                             LastUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Remark = "Bye",
+                            Remark = "Only schedule on Saturdays",
                             StudentId = "id3",
-                            StudentInitials = "C.C"
+                            StudentInitials = "Carrot C."
                         });
                 });
 
@@ -330,16 +510,81 @@ namespace BeAn.Data.Migrations
                             Id = -1,
                             MaxTrial = 4,
                             MinTrial = 2,
-                            ProgramId = -3,
-                            Type = "targettype1"
+                            Name = "Washing hands",
+                            ProgramId = -1,
+                            Type = "trial"
                         },
                         new
                         {
                             Id = -2,
                             MaxTrial = 5,
                             MinTrial = 1,
+                            Name = "Making friends",
+                            ProgramId = -1,
+                            Type = "trial"
+                        },
+                        new
+                        {
+                            Id = -3,
+                            MaxTrial = 4,
+                            MinTrial = 2,
+                            Name = "Attending class",
+                            ProgramId = -1,
+                            Type = "trial"
+                        },
+                        new
+                        {
+                            Id = -4,
+                            MaxTrial = 10,
+                            MinTrial = 3,
+                            Name = "Eating dinner",
                             ProgramId = -2,
-                            Type = "targettype2"
+                            Type = "trial"
+                        },
+                        new
+                        {
+                            Id = -5,
+                            MaxTrial = 4,
+                            MinTrial = 2,
+                            Name = "Washing dishes",
+                            ProgramId = -2,
+                            Type = "trial"
+                        },
+                        new
+                        {
+                            Id = -6,
+                            MaxTrial = 5,
+                            MinTrial = 1,
+                            Name = "Going to bed",
+                            ProgramId = -2,
+                            Type = "trial"
+                        },
+                        new
+                        {
+                            Id = -7,
+                            MaxTrial = 10,
+                            MinTrial = 3,
+                            Name = "Riding the bus",
+                            ProgramId = -3,
+                            Type = "trial"
+                        },
+                        new
+                        {
+                            Id = -8,
+                            MaxTrial = 4,
+                            MinTrial = 2,
+                            Name = "Buying groceries",
+                            ProgramId = -3,
+                            Type = "trial"
+                        },
+                        new
+                        {
+                            Id = -9,
+                            MaxTrial = 6,
+                            MinTrial = 1,
+                            Name = "Finding an address",
+                            ProgramId = -3,
+                            Type = "trial"
                         });
                 });
 

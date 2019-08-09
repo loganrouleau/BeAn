@@ -16,6 +16,7 @@ namespace BeAn.Models
 
         public string Type { get; set; }
 
+        // TODO: Delete this column? This information is stored with the prompt
         public string PromptLevel { get; set; }
 
         public int MinTrial { get; set; }

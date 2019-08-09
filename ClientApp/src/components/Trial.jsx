@@ -59,11 +59,13 @@ export class Trial extends Component {
   };
 
   getClassName() {
-    console.log("getting classname");
     if (!this.state.trialComplete) {
       return "";
     }
-    if (this.state.successfulAttempts / this.state.totalAttempts > 0.5) {
+    if (
+      this.state.successfulAttempts / this.state.totalAttempts >=
+      this.state.program.masteryCriteriaCompareTo / 100
+    ) {
       return "trial-success";
     }
     return "trial-failure";
@@ -114,7 +116,11 @@ export class Trial extends Component {
           <Col>
             <p>
               {"Percentage: " +
-                this.state.successfulAttempts / this.state.totalAttempts}
+                Math.round(
+                  100 *
+                    (this.state.successfulAttempts / this.state.totalAttempts)
+                ) +
+                "%"}
             </p>
           </Col>
         </Row>

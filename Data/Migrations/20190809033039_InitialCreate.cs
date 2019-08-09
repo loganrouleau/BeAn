@@ -338,32 +338,32 @@ namespace BeAn.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "Remark", "StudentId", "StudentInitials" },
-                values: new object[] { -1, "Hi", "id1", "A.A" });
+                values: new object[] { -1, "This student is very smart", "id1", "Apple A." });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "Remark", "StudentId", "StudentInitials" },
-                values: new object[] { -2, "Hello", "id2", "B.B" });
+                values: new object[] { -2, "Temporary student until I go on vacation", "id2", "Banana B." });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "Remark", "StudentId", "StudentInitials" },
-                values: new object[] { -3, "Bye", "id3", "C.C" });
+                values: new object[] { -3, "Only schedule on Saturdays", "id3", "Carrot C." });
 
             migrationBuilder.InsertData(
                 table: "Programs",
                 columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "Reusable", "StudentId" },
-                values: new object[] { -1, "words", 2.0299999999999998, 2, 3, "Program B", 0, true, -1 });
+                values: new object[] { -1, "Dealing with school situations", 80.0, 1, 1, "School", 0, true, -1 });
 
             migrationBuilder.InsertData(
                 table: "Programs",
                 columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "Reusable", "StudentId" },
-                values: new object[] { -3, "descwords", 1.0, 1, 5, "Program A", 0, true, -1 });
+                values: new object[] { -2, "Dealing with home situations", 80.0, 1, 2, "Home", 1, true, -1 });
 
             migrationBuilder.InsertData(
                 table: "Programs",
                 columns: new[] { "Id", "Description", "MasteryCriteriaCompareTo", "MasteryCriteriaCompareType", "MasteryCriteriaConsecutiveSessions", "Name", "ProgramComplete", "Reusable", "StudentId" },
-                values: new object[] { -2, "morewords", 2.3300000000000001, 2, 4, "Program C", 1, true, -2 });
+                values: new object[] { -3, "Being away from home", 80.0, 1, 3, "Outing", 0, true, -1 });
 
             migrationBuilder.InsertData(
                 table: "Sessions",
@@ -373,22 +373,157 @@ namespace BeAn.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Targets",
                 columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
-                values: new object[] { -1, 4, 2, null, -3, null, "targettype1" });
+                values: new object[] { -1, 4, 2, "Washing hands", -1, null, "trial" });
 
             migrationBuilder.InsertData(
                 table: "Targets",
                 columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
-                values: new object[] { -2, 5, 1, null, -2, null, "targettype2" });
+                values: new object[] { -2, 5, 1, "Making friends", -1, null, "trial" });
+
+            migrationBuilder.InsertData(
+                table: "Targets",
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -3, 4, 2, "Attending class", -1, null, "trial" });
+
+            migrationBuilder.InsertData(
+                table: "Targets",
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -4, 10, 3, "Eating dinner", -2, null, "trial" });
+
+            migrationBuilder.InsertData(
+                table: "Targets",
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -5, 4, 2, "Washing dishes", -2, null, "trial" });
+
+            migrationBuilder.InsertData(
+                table: "Targets",
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -6, 5, 1, "Going to bed", -2, null, "trial" });
+
+            migrationBuilder.InsertData(
+                table: "Targets",
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -7, 10, 3, "Riding the bus", -3, null, "trial" });
+
+            migrationBuilder.InsertData(
+                table: "Targets",
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -8, 4, 2, "Buying groceries", -3, null, "trial" });
+
+            migrationBuilder.InsertData(
+                table: "Targets",
+                columns: new[] { "Id", "MaxTrial", "MinTrial", "Name", "ProgramId", "PromptLevel", "Type" },
+                values: new object[] { -9, 6, 1, "Finding an address", -3, null, "trial" });
 
             migrationBuilder.InsertData(
                 table: "Prompts",
                 columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
-                values: new object[] { -1, 0, "prompt1", 5, 4, -2 });
+                values: new object[] { -1, 0, "Full physical guidance", 1, 0, -1 });
 
             migrationBuilder.InsertData(
                 table: "Prompts",
                 columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
-                values: new object[] { -2, 1, "prompt2", 4, 4, -2 });
+                values: new object[] { -20, 1, "Is able to follow shopping list and checkout", 2, 0, -8 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -19, 3, "Doesn't know what to buy", 1, 1, -8 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -18, 2, "Can ride the bus with guidance", 2, 0, -7 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -17, 1, "Doesn't know how to get on the bus", 1, 0, -7 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -16, 2, "Goes to bed on their own", 2, 1, -6 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -15, 2, "Complains and must be dragged to bed", 1, 1, -6 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -14, 2, "Misses a few spots", 2, 1, -5 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -13, 2, "Needs physical guidance", 1, 1, -5 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -12, 2, "Flawless eater", 3, 1, -4 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -21, 3, "Needs assistance", 1, 1, -9 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -11, 2, "Makes small mistakes and spills food", 2, 1, -4 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -9, 0, "Usually remembers to attend class", 3, 0, -3 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -8, 1, "Must remind to attend class", 2, 1, -3 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -7, 1, "Won't go to class unless physically guided", 1, 1, -3 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -6, 0, "Will initiate interaction on their own", 3, 0, -2 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -5, 0, "Needs a reminder", 2, 0, -2 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -4, 1, "Requires introduction and prompting", 1, 1, -2 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -3, 0, "No assistance required", 3, 0, -1 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -2, 0, "Demonstration of me washing hands", 2, 0, -1 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -10, 2, "Needs physical guidance with cutlery", 1, 1, -4 });
+
+            migrationBuilder.InsertData(
+                table: "Prompts",
+                columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
+                values: new object[] { -22, 0, "Can use Google Maps to find an address", 2, 0, -9 });
 
             migrationBuilder.InsertData(
                 table: "SessionDatas",

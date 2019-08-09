@@ -13,6 +13,7 @@ namespace BeAn.Models
 
         public string Description { get; set; }
 
+        // TODO: should be boolean
         public int PromptLevelComplete { get; set; }
 
         public int ConsecutiveSuccessfulSession { get; set; }
