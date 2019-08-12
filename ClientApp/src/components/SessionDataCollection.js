@@ -5,9 +5,12 @@ import { Trial } from "./Trial";
 export class SessionDataCollection extends Component {
   state = {
     sessionId: "",
-    program: "",
-    description: "",
-    targets: []
+    student: "",
+    currentProgram: "",
+    currentProgramDescription: "",
+    currentProgramTargets: [],
+    expandedProgramId: "",
+    programOptions: ""
   };
 
   constructor(props) {
@@ -15,64 +18,114 @@ export class SessionDataCollection extends Component {
     super(props);
     if (props.location.program) {
       this.state.sessionId = props.match.params.id;
-      this.state.program = props.location.program;
-      this.state.description = props.location.description;
+      this.state.student = props.location.student;
+      this.state.currentProgram = props.location.program;
+      this.state.currentProgramDescription = props.location.description;
+      this.state.expandedProgramId = this.state.currentProgram.id;
     }
   }
 
   componentDidMount() {
-    this.getTargets();
+    this.getTargetsForProgram(this.state.currentProgram.id);
+    this.getProgramOptions();
   }
 
-  getTargets = async function() {
-    const response = await fetch(
-      "api/program/targets/" + this.state.program.id
-    );
+  getTargetsForProgram = async function(programId) {
+    const response = await fetch("api/program/targets/" + programId);
     let data = await response.json();
-    this.setState({ targets: data }, () => {
-      this.state.targets.forEach((target, index) => {
+    this.setState({ currentProgramTargets: data }, () => {
+      this.state.currentProgramTargets.forEach((target, index) => {
         this.getPrompts(target, index);
       });
+    });
+  };
+
+  getProgramOptions = async function() {
+    const response = await fetch(
+      "api/student/programs/" + this.state.student.id
+    );
+    let responseJson = await response.json();
+    this.setState({
+      programOptions: responseJson
     });
   };
 
   getPrompts = async function(target, index) {
     const response = await fetch("api/target/prompts/" + target.id);
     let data = await response.json();
-    let targets = this.state.targets;
+    let targets = this.state.currentProgramTargets;
     targets[index].prompts = data;
-    this.setState({ targets: targets });
+    this.setState({ currentProgramTargets: targets });
   };
 
   handleStopSession = () => {};
+
+  handleExpandProgram(program) {
+    // TODO: allow other programs to be expanded
+    //this.setState({ expandedProgramId: programId });
+  }
 
   render() {
     console.log(this.state);
     return (
       <Container>
         <h1>Start recording your data!</h1>
-        <p>{"Session description: " + this.state.description}</p>
-        {this.renderCurrentProgram()}
-        {this.renderTargets()}
+        <p>{"Session description: " + this.state.currentProgramDescription}</p>
+        {this.renderPrograms()}
         {this.renderStopSessionButton()}
       </Container>
     );
   }
 
-  renderCurrentProgram() {
+  renderPrograms() {
     return (
       <div>
-        <p>{"Program name: " + this.state.program.name}</p>
-        <p>{"Program description: " + this.state.program.description}</p>
+        {Object.values(this.state.programOptions).map(program =>
+          this.renderProgram(program)
+        )}
       </div>
     );
   }
 
-  renderTargets() {
-    if (this.state.targets.length > 0) {
+  renderProgram(program) {
+    let programHeader = (
+      <div>
+        <h1>{"Program name: " + program.name}</h1>
+        <h1>{"Program description: " + program.description}</h1>
+      </div>
+    );
+    let expandButton = (
+      <button
+        className="btn btn-secondary"
+        onClick={this.handleExpandProgram(program)}
+      >
+        Expand
+      </button>
+    );
+    if (program.id === this.state.expandedProgramId) {
       return (
         <div>
-          {this.state.targets.map(target => this.renderPrompts(target))}
+          {programHeader}
+          {this.renderTargets()}
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          {programHeader}
+          {expandButton}
+        </div>
+      );
+    }
+  }
+
+  renderTargets() {
+    if (this.state.currentProgramTargets.length > 0) {
+      return (
+        <div>
+          {this.state.currentProgramTargets.map(target =>
+            this.renderPrompts(target)
+          )}
         </div>
       );
     }
@@ -88,7 +141,7 @@ export class SessionDataCollection extends Component {
             <Trial
               prompt={prompt}
               target={target}
-              program={this.state.program}
+              program={this.state.currentProgram}
               handleTrialComplete={this.handleTrialComplete}
               key={prompt.id}
             />

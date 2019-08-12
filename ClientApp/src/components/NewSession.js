@@ -83,6 +83,7 @@ export class NewSession extends Component {
         <Redirect
           to={{
             pathname: "/session-data-collection/" + this.state.sessionId,
+            student: this.state.selectedStudent,
             program: this.state.selectedProgram,
             description: this.state.sessionDescription
           }}

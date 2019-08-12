@@ -72,7 +72,6 @@ export class Trial extends Component {
   }
 
   render() {
-    console.log(this.state.trialComplete);
     return (
       <div className={"trial " + this.getClassName()}>
         <Row>
