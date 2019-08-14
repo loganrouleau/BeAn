@@ -61,8 +61,14 @@ export class SessionDataCollection extends Component {
   handleStopSession = () => {};
 
   handleExpandProgram(program) {
+    console.log("handleExpandedProgram");
+    this.getTargetsForProgram(program.id);
     // TODO: allow other programs to be expanded
-    //this.setState({ expandedProgramId: programId });
+    this.setState({
+      expandedProgramId: program.id,
+      currentProgram: program,
+      currentProgramDescription: program.description
+    });
   }
 
   render() {
@@ -90,14 +96,14 @@ export class SessionDataCollection extends Component {
   renderProgram(program) {
     let programHeader = (
       <div>
-        <h1>{"Program name: " + program.name}</h1>
-        <h1>{"Program description: " + program.description}</h1>
+        <h3>{"Program name: " + program.name}</h3>
+        <p>{"Program description: " + program.description}</p>
       </div>
     );
     let expandButton = (
       <button
         className="btn btn-secondary"
-        onClick={this.handleExpandProgram(program)}
+        onClick={() => this.handleExpandProgram(program)}
       >
         Expand
       </button>
@@ -105,15 +111,25 @@ export class SessionDataCollection extends Component {
     if (program.id === this.state.expandedProgramId) {
       return (
         <div>
-          {programHeader}
-          {this.renderTargets()}
+          <div style={{ borderStyle: "solid", borderWidth: "1px" }}>
+            {programHeader}
+            {this.renderTargets()}
+          </div>
+          <div>
+            <br />
+          </div>
         </div>
       );
     } else {
       return (
         <div>
-          {programHeader}
-          {expandButton}
+          <div style={{ borderStyle: "solid", borderWidth: "1px" }}>
+            {programHeader}
+            {expandButton}
+          </div>
+          <div>
+            <br />
+          </div>
         </div>
       );
     }
@@ -136,7 +152,7 @@ export class SessionDataCollection extends Component {
     if (target.prompts && target.prompts.length > 0) {
       return (
         <div>
-          <h1>{"Target name: " + target.name}</h1>
+          <p>{"Target name: " + target.name}</p>
           {target.prompts.map(prompt => (
             <Trial
               prompt={prompt}
