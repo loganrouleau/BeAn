@@ -276,15 +276,30 @@ export class StudentInfoUpdate extends Component {
     }
   }
   
-  savePrograms() { //Post newlyAddedProgramIds to backend
+  savePrograms() { //Post newlyAddedProgramIds.backendId to backend
     console.log("savePrograms")
-    const programsToSave = this.state.newlyAddedProgramIds;
+    const programsToSave = this.state.newlyAddedProgramIds.backendId;
+    const array = [];
+    array.push(parseInt(this.props.match.params.id,10));
+    for(var i=0; i<programsToSave.length; i++ ){
+      
+      array.push(parseInt(programsToSave[i],10));
+    }
+    
+    console.log("array ");
+    console.log(array);
+    console.log(JSON.stringify(
+      //this.props.match.params.id, //
+      //this.state.student.studentId,
+      //...programsToSave
+      array
+    ));
     fetch("https://localhost:5001/api/program/saveNewlyAddedPrograms/", {
       method: "POST",
-      body: JSON.stringify({
-        studentId: this.props.match.params.id,
-        ...programsToSave
-      }),
+      body: JSON.stringify(JSON.stringify(
+        //this.props.match.params.id, //
+        array
+      )),
       cache: "no-cache",
       headers: {
         "content-type": "application/json"
