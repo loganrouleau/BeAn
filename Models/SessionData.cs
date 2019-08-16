@@ -9,13 +9,12 @@ namespace BeAn.Models
 
         public int Data { get; set; }
 
+        public int TrialNumber { get; set; }
+
         public DateTime LastUpdated { get; set; }
 
-        [ForeignKey("ProgramId")]
-        public virtual Program Program { get; set; }
-
-        [ForeignKey("TargetId")]
-        public virtual Target Target { get; set; }
+        [ForeignKey("PromptId")]
+        public virtual Prompt Prompt { get; set; }
 
         [ForeignKey("SessionId")]
         public virtual Session Session { get; set; }

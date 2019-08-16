@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeAn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190809033039_InitialCreate")]
+    [Migration("20190816012020_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -406,31 +406,19 @@ namespace BeAn.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("datetime('now')");
 
-                    b.Property<int?>("ProgramId");
+                    b.Property<int?>("PromptId");
 
                     b.Property<int?>("SessionId");
 
-                    b.Property<int?>("TargetId");
+                    b.Property<int>("TrialNumber");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProgramId");
+                    b.HasIndex("PromptId");
 
                     b.HasIndex("SessionId");
 
-                    b.HasIndex("TargetId");
-
                     b.ToTable("SessionDatas");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            Data = 1,
-                            ProgramId = -2,
-                            SessionId = -1,
-                            TargetId = -2
-                        });
                 });
 
             modelBuilder.Entity("BeAn.Models.Student", b =>
@@ -791,17 +779,13 @@ namespace BeAn.Data.Migrations
 
             modelBuilder.Entity("BeAn.Models.SessionData", b =>
                 {
-                    b.HasOne("BeAn.Models.Program", "Program")
+                    b.HasOne("BeAn.Models.Prompt", "Prompt")
                         .WithMany()
-                        .HasForeignKey("ProgramId");
+                        .HasForeignKey("PromptId");
 
                     b.HasOne("BeAn.Models.Session", "Session")
                         .WithMany("SessionData")
                         .HasForeignKey("SessionId");
-
-                    b.HasOne("BeAn.Models.Target", "Target")
-                        .WithMany()
-                        .HasForeignKey("TargetId");
                 });
 
             modelBuilder.Entity("BeAn.Models.Target", b =>

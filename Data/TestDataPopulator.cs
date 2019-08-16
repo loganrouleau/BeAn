@@ -132,10 +132,6 @@ namespace BeAn.Data
             modelBuilder.Entity<Session>().HasData(
                 new { Id = -1, Description = "session1", StudentId = -3 }
             );
-
-            modelBuilder.Entity<SessionData>().HasData(
-                new { Id = -1, Data = 1, SessionId = -1, ProgramId = -2, TargetId = -2 }
-            );
         }
     }
 }

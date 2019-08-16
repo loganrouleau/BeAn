@@ -307,30 +307,24 @@ namespace BeAn.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Data = table.Column<int>(nullable: false),
+                    TrialNumber = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
-                    ProgramId = table.Column<int>(nullable: true),
-                    TargetId = table.Column<int>(nullable: true),
+                    PromptId = table.Column<int>(nullable: true),
                     SessionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SessionDatas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SessionDatas_Programs_ProgramId",
-                        column: x => x.ProgramId,
-                        principalTable: "Programs",
+                        name: "FK_SessionDatas_Prompts_PromptId",
+                        column: x => x.PromptId,
+                        principalTable: "Prompts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SessionDatas_Sessions_SessionId",
                         column: x => x.SessionId,
                         principalTable: "Sessions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SessionDatas_Targets_TargetId",
-                        column: x => x.TargetId,
-                        principalTable: "Targets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -468,12 +462,12 @@ namespace BeAn.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Prompts",
                 columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
-                values: new object[] { -21, 3, "Needs assistance", 1, 1, -9 });
+                values: new object[] { -11, 2, "Makes small mistakes and spills food", 2, 1, -4 });
 
             migrationBuilder.InsertData(
                 table: "Prompts",
                 columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
-                values: new object[] { -11, 2, "Makes small mistakes and spills food", 2, 1, -4 });
+                values: new object[] { -10, 2, "Needs physical guidance with cutlery", 1, 1, -4 });
 
             migrationBuilder.InsertData(
                 table: "Prompts",
@@ -518,17 +512,12 @@ namespace BeAn.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Prompts",
                 columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
-                values: new object[] { -10, 2, "Needs physical guidance with cutlery", 1, 1, -4 });
+                values: new object[] { -21, 3, "Needs assistance", 1, 1, -9 });
 
             migrationBuilder.InsertData(
                 table: "Prompts",
                 columns: new[] { "Id", "ConsecutiveSuccessfulSession", "Description", "Level", "PromptLevelComplete", "TargetId" },
                 values: new object[] { -22, 0, "Can use Google Maps to find an address", 2, 0, -9 });
-
-            migrationBuilder.InsertData(
-                table: "SessionDatas",
-                columns: new[] { "Id", "Data", "ProgramId", "SessionId", "TargetId" },
-                values: new object[] { -1, 1, -2, -1, -2 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -589,19 +578,14 @@ namespace BeAn.Data.Migrations
                 column: "TargetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SessionDatas_ProgramId",
+                name: "IX_SessionDatas_PromptId",
                 table: "SessionDatas",
-                column: "ProgramId");
+                column: "PromptId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SessionDatas_SessionId",
                 table: "SessionDatas",
                 column: "SessionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SessionDatas_TargetId",
-                table: "SessionDatas",
-                column: "TargetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sessions_StudentId",
@@ -638,9 +622,6 @@ namespace BeAn.Data.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "Prompts");
-
-            migrationBuilder.DropTable(
                 name: "SessionDatas");
 
             migrationBuilder.DropTable(
@@ -648,6 +629,9 @@ namespace BeAn.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Prompts");
 
             migrationBuilder.DropTable(
                 name: "Sessions");
