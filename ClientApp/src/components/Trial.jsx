@@ -6,6 +6,7 @@ export class Trial extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      sessionId: props.sessionId,
       prompt: props.prompt,
       target: props.target,
       program: props.program,
@@ -71,6 +72,31 @@ export class Trial extends Component {
     return "trial-failure";
   }
 
+  handleSave = () => {
+    let data = "";
+    [...this.state.progress].forEach(c => {
+      if (c === "+") {
+        data += "1";
+      } else if (c === "-") {
+        data += "0";
+      }
+    });
+    data = parseInt(data, 10);
+
+    fetch("api/sessiondata/create", {
+      method: "POST",
+      body: JSON.stringify({
+        data: data,
+        trialNumber: 999,
+        promptId: this.state.prompt.id,
+        sessionId: this.state.sessionId
+      }),
+      headers: {
+        "content-type": "application/json"
+      }
+    });
+  };
+
   render() {
     return (
       <div className={"trial " + this.getClassName()}>
@@ -121,6 +147,11 @@ export class Trial extends Component {
                 ) +
                 "%"}
             </p>
+          </Col>
+          <Col>
+            <button className="btn btn-primary" onClick={this.handleSave}>
+              {this.state.trialComplete ? "Save" : ""}
+            </button>
           </Col>
         </Row>
       </div>

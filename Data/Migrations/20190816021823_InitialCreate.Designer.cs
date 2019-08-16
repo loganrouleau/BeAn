@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeAn.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190816012020_InitialCreate")]
+    [Migration("20190816021823_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -406,9 +406,9 @@ namespace BeAn.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("datetime('now')");
 
-                    b.Property<int?>("PromptId");
+                    b.Property<int>("PromptId");
 
-                    b.Property<int?>("SessionId");
+                    b.Property<int>("SessionId");
 
                     b.Property<int>("TrialNumber");
 
@@ -781,11 +781,15 @@ namespace BeAn.Data.Migrations
                 {
                     b.HasOne("BeAn.Models.Prompt", "Prompt")
                         .WithMany()
-                        .HasForeignKey("PromptId");
+                        .HasForeignKey("PromptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BeAn.Models.Session", "Session")
                         .WithMany("SessionData")
-                        .HasForeignKey("SessionId");
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BeAn.Models.Target", b =>

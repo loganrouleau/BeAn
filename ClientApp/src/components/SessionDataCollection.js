@@ -5,9 +5,9 @@ import { Trial } from "./Trial";
 export class SessionDataCollection extends Component {
   state = {
     sessionId: "",
+    sessionDescription: "",
     student: "",
     currentProgram: "",
-    currentProgramDescription: "",
     currentProgramTargets: [],
     expandedProgramId: "",
     programOptions: ""
@@ -18,9 +18,9 @@ export class SessionDataCollection extends Component {
     super(props);
     if (props.location.program) {
       this.state.sessionId = props.match.params.id;
+      this.state.sessionDescription = props.location.description;
       this.state.student = props.location.student;
       this.state.currentProgram = props.location.program;
-      this.state.currentProgramDescription = props.location.description;
       this.state.expandedProgramId = this.state.currentProgram.id;
     }
   }
@@ -66,8 +66,7 @@ export class SessionDataCollection extends Component {
     // TODO: allow other programs to be expanded
     this.setState({
       expandedProgramId: program.id,
-      currentProgram: program,
-      currentProgramDescription: program.description
+      currentProgram: program
     });
   }
 
@@ -76,7 +75,7 @@ export class SessionDataCollection extends Component {
     return (
       <Container>
         <h1>Start recording your data!</h1>
-        <p>{"Session description: " + this.state.currentProgramDescription}</p>
+        <p>{"Session description: " + this.state.sessionDescription}</p>
         {this.renderPrograms()}
         {this.renderStopSessionButton()}
       </Container>
@@ -111,7 +110,7 @@ export class SessionDataCollection extends Component {
     if (program.id === this.state.expandedProgramId) {
       return (
         <div>
-          <div style={{ borderStyle: "solid", borderWidth: "1px" }}>
+          <div style={{ borderStyle: "solid", borderWidth: "2px" }}>
             {programHeader}
             {this.renderTargets()}
           </div>
@@ -155,6 +154,7 @@ export class SessionDataCollection extends Component {
           <p>{"Target name: " + target.name}</p>
           {target.prompts.map(prompt => (
             <Trial
+              sessionId={this.state.sessionId}
               prompt={prompt}
               target={target}
               program={this.state.currentProgram}

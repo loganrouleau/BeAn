@@ -309,8 +309,8 @@ namespace BeAn.Data.Migrations
                     Data = table.Column<int>(nullable: false),
                     TrialNumber = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false, defaultValueSql: "datetime('now')"),
-                    PromptId = table.Column<int>(nullable: true),
-                    SessionId = table.Column<int>(nullable: true)
+                    PromptId = table.Column<int>(nullable: false),
+                    SessionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -320,13 +320,13 @@ namespace BeAn.Data.Migrations
                         column: x => x.PromptId,
                         principalTable: "Prompts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SessionDatas_Sessions_SessionId",
                         column: x => x.SessionId,
                         principalTable: "Sessions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
